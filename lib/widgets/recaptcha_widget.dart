@@ -13,15 +13,15 @@ class _RecaptchaWidgetState extends State<RecaptchaWidget> {
   @override
   void initState() {
     super.initState();
-    // reCAPTCHA HTML içeriğini oluşturmak için view factory kaydediyoruz.
-    ui.platformViewRegistry.registerViewFactory(
-      createdViewId,
-      (int viewId) => html.IFrameElement()
-        ..src = 'assets/html/recaptcha.html' // HTML dosyasının yolu
-        ..style.border = 'none'
-        ..style.width = '100%' // Genişliği %100 yapıyoruz
-        ..style.height = '100%', // Yüksekliği %100 yapıyoruz
-    );
+    // // reCAPTCHA HTML içeriğini oluşturmak için view factory kaydediyoruz.
+    // ui.platformViewRegistry.registerViewFactory(
+    //   createdViewId,
+    //   (int viewId) => html.IFrameElement()
+    //     ..src = 'assets/html/recaptcha.html' // HTML dosyasının yolu
+    //     ..style.border = 'none'
+    //     ..style.width = '100%' // Genişliği %100 yapıyoruz
+    //     ..style.height = '100%', // Yüksekliği %100 yapıyoruz
+    // );
   }
 
   @override
