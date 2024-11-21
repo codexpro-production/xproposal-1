@@ -1,6 +1,8 @@
 import 'dart:html' as html;
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
+import 'package:flutter_recaptcha_v3/flutter_recaptcha_v3.dart';
+
 
 class RecaptchaWidget extends StatefulWidget {
   @override
@@ -13,6 +15,7 @@ class _RecaptchaWidgetState extends State<RecaptchaWidget> {
   @override
   void initState() {
     super.initState();
+<<<<<<< HEAD
     // // reCAPTCHA HTML içeriğini oluşturmak için view factory kaydediyoruz.
     // ui.platformViewRegistry.registerViewFactory(
     //   createdViewId,
@@ -22,6 +25,18 @@ class _RecaptchaWidgetState extends State<RecaptchaWidget> {
     //     ..style.width = '100%' // Genişliği %100 yapıyoruz
     //     ..style.height = '100%', // Yüksekliği %100 yapıyoruz
     // );
+=======
+
+    // reCAPTCHA HTML içeriğini oluşturmak için view factory kaydediyoruz.
+    ui.platformViewRegistry.registerViewFactory(
+      createdViewId,
+      (int viewId) => html.IFrameElement()
+        ..src = 'assets/html/recaptcha.html'  // HTML dosyasının yolu
+        ..style.border = 'none'
+        ..style.width = '100%'
+        ..style.height = '100%',
+    );
+>>>>>>> fda8b22 (Şifre belirleme ekranı password gereksinimleri tamamlandı)
   }
 
   @override
@@ -32,7 +47,7 @@ class _RecaptchaWidgetState extends State<RecaptchaWidget> {
       padding: EdgeInsets.all(8),
       child: Directionality(
         textDirection: TextDirection.ltr,
-        child: HtmlElementView(viewType: createdViewId),
+        child: HtmlElementView(viewType: createdViewId),  // reCAPTCHA widget'ını render ediyoruz
       ),
     );
   }

@@ -1,10 +1,11 @@
 import 'dart:html' as html;
+import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../services/sap_service.dart';
 import '../services/verify_token.dart';
 import '../widgets/recaptcha_widget.dart'; // reCAPTCHA widget'ını dahil edin
 import '../screens/xproposal_screen.dart';
-
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -15,28 +16,18 @@ class _LoginScreenState extends State<LoginScreen> {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _obscureText = true;
-  String? _captchaToken; // Token'ı saklamak için bir değişken
+  String? _captchaToken;
+  String? _errorMessage;
 
   @override
   void initState() {
     super.initState();
-
-    // reCAPTCHA'dan gelen token'ı dinleyin
     html.window.onMessage.listen((msg) {
-  String token = msg.data; // reCAPTCHA yanıt token'ı
-  verifyToken(token).then((isVerified) {
-    if (isVerified) {
-      // Eğer doğrulama başarılıysa, başka bir sayfaya geçebilirsiniz
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => XProposalPage()),
-      );
-    } else {
-      // Doğrulama başarısızsa bir hata mesajı gösterebilirsiniz
-      print('reCAPTCHA doğrulama başarısız.');
-    }
-  });
-});
+      String token = msg.data;
+      setState(() {
+        _captchaToken = token;
+      });
+    });
   }
 
   @override
@@ -55,7 +46,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 width: imageWidth,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage('../assests/images/login_image.jpg'),
+                    image: AssetImage('../assets/images/login_image.jpg'),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -65,109 +56,127 @@ class _LoginScreenState extends State<LoginScreen> {
               Expanded(
                 flex: 1,
                 child: Padding(
-                  padding: EdgeInsets.all(16),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Hoşgeldiniz",
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
+                  padding: EdgeInsets.symmetric(vertical: 60, horizontal: 16), // Üst ve alt boşluk
+                  child: Center(
+                    child: Container(
+                      width: 400,
+                      padding: EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            blurRadius: 10,
+                            spreadRadius: 2,
+                            color: Colors.grey.withOpacity(0.2),
+                          ),
+                        ],
                       ),
-                      SizedBox(height: 20),
-
-                      Container(
-                        padding: EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                              blurRadius: 10,
-                              spreadRadius: 2,
-                              color: Colors.grey.withOpacity(0.2),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Hoşgeldiniz",
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
                             ),
-                          ],
-                        ),
-                        child: Column(
-                          children: [
-                            TextField(
-                              controller: _usernameController,
-                              decoration: InputDecoration(
-                                labelText: "*Kullanıcı Adı",
-                                prefixIcon: Icon(Icons.person),
-                              ),
+                          ),
+                          SizedBox(height: 20),
+                          // Kullanıcı adı
+                          TextField(
+                            controller: _usernameController,
+                            decoration: InputDecoration(
+                              labelText: "*Kullanıcı Adı (VKN veya TC Kimlik No)",
+                              prefixIcon: Icon(Icons.person),
+                              border: OutlineInputBorder(),
                             ),
-                            SizedBox(height: 16),
+                            keyboardType: TextInputType.number,
+                            inputFormatters: [
+                              LengthLimitingTextInputFormatter(11),
+                            ],
+                          ),
+                          SizedBox(height: 16),
 
-                            TextField(
-                              controller: _passwordController,
-                              obscureText: _obscureText,
-                              decoration: InputDecoration(
-                                labelText: "*Şifre",
-                                prefixIcon: Icon(Icons.lock),
-                                suffixIcon: IconButton(
-                                  icon: Icon(_obscureText
-                                      ? Icons.visibility
-                                      : Icons.visibility_off),
-                                  onPressed: () {
-                                    setState(() {
-                                      _obscureText = !_obscureText;
-                                    });
-                                  },
+                          // Şifre alanı
+                          TextField(
+                            controller: _passwordController,
+                            obscureText: _obscureText,
+                            decoration: InputDecoration(
+                              labelText: "*Şifre",
+                              prefixIcon: Icon(Icons.lock),
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  _obscureText
+                                      ? Icons.visibility_off
+                                      : Icons.visibility,
                                 ),
-                              ),
-                            ),
-                            SizedBox(height: 16),
-
-                            Align(
-                              alignment: Alignment.centerRight,
-                              child: TextButton(
                                 onPressed: () {
-                                  Navigator.pushNamed(context, '/passwordReset');
+                                  setState(() {
+                                    _obscureText = !_obscureText;
+                                  });
+
+                                  if (!_obscureText) {
+                                    // Şifreyi göster, 2 saniye sonra tekrar gizle
+                                    Future.delayed(Duration(seconds: 2), () {
+                                      setState(() {
+                                        _obscureText = true;
+                                      });
+                                    });
+                                  }
                                 },
-                                child: Text("Şifremi Unuttum",
-                                    style: TextStyle(color: Colors.blue)),
                               ),
+                              border: OutlineInputBorder(),
                             ),
+                          ),
+                          SizedBox(height: 16),
 
-                            // CAPTCHA alanı
-                            RecaptchaWidget(),
-                            SizedBox(height: 16),
-
-                            ElevatedButton(
-                              onPressed: _login,
-                              child: Text("Giriş Yap"),
-                            ),
-                            SizedBox(height: 16),
-                            TextButton(
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: TextButton(
                               onPressed: () {
-                                Navigator.pushNamed(context, '/register');
+                                Navigator.pushNamed(context, '/passwordReset');
                               },
-                              child: Text("Kayıt Ol",
+                              child: Text("Şifremi Unuttum",
                                   style: TextStyle(color: Colors.blue)),
                             ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(height: 20),
+                          ),
 
-                      Text(
-                        "* İşaretli alanların doldurulması zorunludur.",
-                        style: TextStyle(fontSize: 12, color: Colors.grey),
-                      ),
+                          // CAPTCHA alanı
+                          RecaptchaWidget(),
+                          SizedBox(height: 16),
 
-                      SizedBox(height: 16),
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/helpDocument');
-                        },
-                        child: Text("Yardım Dokümanı"),
+                          // Hata mesajı
+                          if (_errorMessage != null)
+                            Container(
+                              padding: EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                color: Colors.red.withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Text(
+                                _errorMessage!,
+                                style: TextStyle(color: Colors.red),
+                              ),
+                            ),
+                          SizedBox(height: 16),
+
+                          ElevatedButton(
+                            onPressed: _login,
+                            child: Text("Giriş Yap"),
+                          ),
+                          SizedBox(height: 16),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pushNamed(context, '/register');
+                            },
+                            child: Text("Kayıt Ol",
+                                style: TextStyle(color: Colors.blue)),
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
                 ),
               ),
@@ -183,16 +192,18 @@ class _LoginScreenState extends State<LoginScreen> {
     final password = _passwordController.text;
 
     if (_captchaToken == null) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text("CAPTCHA doğrulaması eksik!")));
+      setState(() {
+        _errorMessage = "CAPTCHA doğrulaması eksik!";
+      });
       return;
     }
 
     // CAPTCHA doğrulamasını yap
     final isCaptchaValid = await verifyToken(_captchaToken!);
     if (!isCaptchaValid) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("CAPTCHA doğrulaması başarısız.")));
+      setState(() {
+        _errorMessage = "CAPTCHA doğrulaması başarısız.";
+      });
       return;
     }
 
@@ -200,8 +211,9 @@ class _LoginScreenState extends State<LoginScreen> {
     SAPService().authenticateUser(username, password).then((user) {
       Navigator.pushReplacementNamed(context, '/home');
     }).catchError((error) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text("Giriş hatası: $error")));
+      setState(() {
+        _errorMessage = "Giriş hatası: $error";
+      });
     });
   }
 }
