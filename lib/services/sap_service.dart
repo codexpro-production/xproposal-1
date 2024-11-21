@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:xproposal/models/vendor.dart';
 
 class SAPService {
-  final String _baseUrl = "https://10.1.4.21:44300/zcxp_vendor_srv/VENDOR";
+  final String _baseUrl = "http://10.1.4.21:50000/zxproposal";
   final String _username = "sdemirtag";
   final String _password = "Codex2024*";
 
