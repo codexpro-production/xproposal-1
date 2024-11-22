@@ -6,8 +6,6 @@ import '../widgets/captcha_widget.dart'; // reCAPTCHA widget'ını dahil edin
 import '../screens/xproposal_screen.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
-
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -55,7 +53,7 @@ class _LoginScreenState extends State<LoginScreen> {
               // Sol kısımda fotoğraf alanı
               Container(
                 width: imageWidth,
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage('assets/images/login_image.jpg'),
                     fit: BoxFit.cover,
@@ -66,21 +64,21 @@ class _LoginScreenState extends State<LoginScreen> {
               // Sağ kısımda form alanı
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.all(16),
+                  padding: EdgeInsets.all(16),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text(
+                      Text(
                         "Hoşgeldiniz",
                         style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const SizedBox(height: 20),
+                      SizedBox(height: 20),
 
                       Container(
-                        padding: const EdgeInsets.all(16),
+                        padding: EdgeInsets.all(16),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           color: Colors.white,
@@ -96,19 +94,19 @@ class _LoginScreenState extends State<LoginScreen> {
                           children: [
                             TextField(
                               controller: _tcVknController,
-                              decoration: const InputDecoration(
+                              decoration: InputDecoration(
                                 labelText: "*TC Kimlik Numarası veya VKN",
                                 prefixIcon: Icon(Icons.credit_card),
                               ),
                               maxLength: 11,  // Sadece 11 haneli girişe izin ver
                               keyboardType: TextInputType.number, // Sayısal giriş için
                             ),
-                            const SizedBox(height: 16),
+                            SizedBox(height: 16),
 
                             // TC Kimlik No veya VKN geri bildirim mesajı
                             if (_tcVknFeedback.isNotEmpty)
                               Container(
-                                padding: const EdgeInsets.all(12),
+                                padding: EdgeInsets.all(12),
                                 decoration: BoxDecoration(
                                   color: _tcVknFeedback.contains("geçerli")
                                       ? Colors.green[100]
@@ -125,14 +123,14 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ),
                                 ),
                               ),
-                            const SizedBox(height: 16),
+                            SizedBox(height: 16),
 
                             TextField(
                               controller: _passwordController,
                               obscureText: _obscureText,
                               decoration: InputDecoration(
                                 labelText: "*Şifre",
-                                prefixIcon: const Icon(Icons.lock),
+                                prefixIcon: Icon(Icons.lock),
                                 suffixIcon: IconButton(
                                   icon: Icon(_obscureText
                                       ? Icons.visibility
@@ -145,7 +143,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                               ),
                             ),
-                            const SizedBox(height: 16),
+                            SizedBox(height: 16),
 
                             Align(
                               alignment: Alignment.centerRight,
@@ -153,7 +151,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 onPressed: () {
                                   Navigator.pushNamed(context, '/passwordReset');
                                 },
-                                child: const Text("Şifremi Unuttum",
+                                child: Text("Şifremi Unuttum",
                                     style: TextStyle(color: Colors.blue)),
                               ),
                             ),
@@ -169,12 +167,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                 });
                               },
                             ),  // CAPTCHA alanı
-                            const SizedBox(height: 10),
+                            SizedBox(height: 10),
 
                             // CAPTCHA geri bildirim mesajı
                             if (_captchaFeedback.isNotEmpty)
                               Container(
-                                padding: const EdgeInsets.all(12),
+                                padding: EdgeInsets.all(12),
                                 decoration: BoxDecoration(
                                   color: _captchaFeedback.contains("doğru")
                                       ? Colors.green[100]
@@ -192,36 +190,36 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                               ),
 
-                            const SizedBox(height: 20),
+                            SizedBox(height: 20),
 
                             ElevatedButton(
                               onPressed: _login,
-                              child: const Text("Giriş Yap"),
+                              child: Text("Giriş Yap"),
                             ),
-                            const SizedBox(height: 16),
+                            SizedBox(height: 16),
                             TextButton(
                               onPressed: () {
                                 Navigator.pushNamed(context, '/register');
                               },
-                              child: const Text("Kayıt Ol",
+                              child: Text("Kayıt Ol",
                                   style: TextStyle(color: Colors.blue)),
                             ),
                           ],
                         ),
                       ),
-                      const SizedBox(height: 20),
+                      SizedBox(height: 20),
 
-                      const Text(
+                      Text(
                         "* İşaretli alanların doldurulması zorunludur.",
                         style: TextStyle(fontSize: 12, color: Colors.grey),
                       ),
 
-                      const SizedBox(height: 16),
+                      SizedBox(height: 16),
                       ElevatedButton(
                         onPressed: () {
                           Navigator.pushNamed(context, '/helpDocument');
                         },
-                        child: const Text("Yardım Dokümanı"),
+                        child: Text("Yardım Dokümanı"),
                       ),
                     ],
                   ),
@@ -250,13 +248,13 @@ class _LoginScreenState extends State<LoginScreen> {
       // final user = await SAPService().authenticateUserByTcVkn(tcVkn, password);
       
       // Geçici olarak başarılı bir giriş sağlanmış gibi simüle edelim
-      const user = true; // Bu kısmı geçici olarak simüle ediyoruz.
+      final user = true; // Bu kısmı geçici olarak simüle ediyoruz.
       
-      if (user) {
+      if (user != null && user) {
         Navigator.pushReplacementNamed(context, '/home');
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Kullanıcı adı veya şifre hatalı.")),
+          SnackBar(content: Text("Kullanıcı adı veya şifre hatalı.")),
         );
       }
     } catch (error) {
@@ -265,4 +263,4 @@ class _LoginScreenState extends State<LoginScreen> {
       );
     }
   }
-}
+} 

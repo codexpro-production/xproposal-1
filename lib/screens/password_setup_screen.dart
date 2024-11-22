@@ -5,8 +5,6 @@ import 'package:crypto/crypto.dart';
 // import '../services/sap_service.dart'; // SAP servis importunu geçici olarak yorum satırı haline getirdik
 
 class PasswordSetupScreen extends StatefulWidget {
-  const PasswordSetupScreen({super.key});
-
   @override
   _PasswordSetupScreenState createState() => _PasswordSetupScreenState();
 }
@@ -54,12 +52,12 @@ class _PasswordSetupScreenState extends State<PasswordSetupScreen> {
     setState(() {
       if (isNewPasswordField) {
         _showNewPassword = true;
-        Timer(const Duration(seconds: 2), () {
+        Timer(Duration(seconds: 2), () {
           setState(() => _showNewPassword = false);
         });
       } else {
         _showConfirmPassword = true;
-        Timer(const Duration(seconds: 2), () {
+        Timer(Duration(seconds: 2), () {
           setState(() => _showConfirmPassword = false);
         });
       }
@@ -69,15 +67,15 @@ class _PasswordSetupScreenState extends State<PasswordSetupScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Şifre Belirleme")),
+      appBar: AppBar(title: Text("Şifre Belirleme")),
       body: Center(
         child: Container(
           width: 400,
-          padding: const EdgeInsets.all(16),
+          padding: EdgeInsets.all(16),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(12),
-            boxShadow: const [
+            boxShadow: [
               BoxShadow(
                 color: Colors.black12,
                 blurRadius: 10,
@@ -95,12 +93,12 @@ class _PasswordSetupScreenState extends State<PasswordSetupScreen> {
               _buildRequirementRow("En az bir küçük harf (a-z)", _hasLowercase),
               _buildRequirementRow("En az bir sayı (0-9)", _hasDigit),
               _buildRequirementRow("En az bir özel karakter (!, @, #, vb.)", _hasSpecialChar),
-              const SizedBox(height: 16),
+              SizedBox(height: 16),
 
               // Şifre ve şifre tekrar alanları
               _buildPasswordField("Yeni Şifre", _newPasswordController, _showNewPassword, true),
               _buildPasswordField("Şifre Tekrarı", _confirmPasswordController, _showConfirmPassword, false),
-              const SizedBox(height: 16),
+              SizedBox(height: 16),
 
               // Şifre Kaydet butonu
               ElevatedButton(
@@ -111,15 +109,15 @@ class _PasswordSetupScreenState extends State<PasswordSetupScreen> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30), // Yuvarlak köşe
                   ),
-                  padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 14), // İç boşluk
+                  padding: EdgeInsets.symmetric(horizontal: 50, vertical: 14), // İç boşluk
                 ),
-                child: const Text("Şifreyi Kaydet", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                child: Text("Şifreyi Kaydet", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
               ),
               if (_errorMessage != null) ...[
-                const SizedBox(height: 12),
+                SizedBox(height: 12),
                 Text(
                   _errorMessage!,
-                  style: const TextStyle(color: Colors.red),
+                  style: TextStyle(color: Colors.red),
                   textAlign: TextAlign.center,
                 ),
               ],
@@ -147,11 +145,11 @@ class _PasswordSetupScreenState extends State<PasswordSetupScreen> {
               size: 16,
             ),
           ),
-          const SizedBox(width: 10),
+          SizedBox(width: 10),
           Expanded(
             child: Text(
               text,
-              style: const TextStyle(fontSize: 16),
+              style: TextStyle(fontSize: 16),
             ),
           ),
         ],
