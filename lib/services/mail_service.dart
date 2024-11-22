@@ -7,10 +7,10 @@ Future<bool> sendMail(String name, String email, String subject,
   Navigator.of(context).push(MaterialPageRoute(builder: (context) {
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: Colors.greenAccent,
         ),
-        child: Center(
+        child: const Center(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -28,12 +28,12 @@ Future<bool> sendMail(String name, String email, String subject,
   }));
   bool sendStates;
   try {
-    String _username = '';
-    String _password = '';
+    String username = '';
+    String password = '';
 
-    final smtpServer = new SmtpServer('_username, _password',
-        username: _username,
-        password: _password,
+    final smtpServer = SmtpServer('_username, _password',
+        username: username,
+        password: password,
         ignoreBadCertificate: false,
         ssl: false,
         allowInsecure: true);
@@ -48,15 +48,15 @@ Future<bool> sendMail(String name, String email, String subject,
 
     // Create our message.
     final message = Message()
-      ..from = Address("$_username")
-      ..recipients.add('$sendmail')
+      ..from = Address(username)
+      ..recipients.add(sendmail)
       ..subject = konu
       ..text = mesajIcerigi;
 
     try {
       final sendReport = await send(message, smtpServer);
       sendStates = true;
-      print('Message sent: ' + sendReport.toString());
+      print('Message sent: $sendReport');
     } on MailerException catch (e) {
       sendStates = false;
       print('Message not sent.');

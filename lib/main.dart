@@ -6,7 +6,6 @@ import 'screens/password_setup_screen.dart';
 import 'screens/register_screen.dart';
 
 void main() async{
-  await dotenv.load(fileName: ".env");
   runApp(MyApp());
 }
 

@@ -3,6 +3,8 @@ import '../services/sap_service.dart';
 import '../services/mail_service.dart';
 
 class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({super.key});
+
   @override
   _RegisterScreenState createState() => _RegisterScreenState();
 }
@@ -58,7 +60,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   void _showError(String error) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(error, style: TextStyle(color: Colors.red)),
+        content: Text(error, style: const TextStyle(color: Colors.red)),
       ),
     );
   }
@@ -82,7 +84,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       body: Center(
         child: Container(
           width: MediaQuery.of(context).size.width * 0.75,
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             color: Colors.grey[200],
             borderRadius: BorderRadius.circular(8),
@@ -91,37 +93,37 @@ class _RegisterScreenState extends State<RegisterScreen> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text(
+              const Text(
                 "Yeni Kullanıcı Oluştur",
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 20),
-              Text("Lütfen VKN/TCKN girin"),
+              const SizedBox(height: 20),
+              const Text("Lütfen VKN/TCKN girin"),
               TextField(
                 controller: _vknTcknController,
                 onChanged: (_) => _checkFields(),
                 keyboardType: TextInputType.number,
                 maxLength: 11,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: "Vergi Kimlik No veya T.C. Kimlik No",
                 ),
               ),
-              SizedBox(height: 16),
-              Text("Lütfen E-Posta Adresinizi Girin"),
+              const SizedBox(height: 16),
+              const Text("Lütfen E-Posta Adresinizi Girin"),
               TextField(
                 controller: _emailController,
                 onChanged: (_) => _checkFields(),
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: "E-posta",
                 ),
               ),
-              SizedBox(height: 24),
+              const SizedBox(height: 24),
               ElevatedButton(
                 onPressed: _isButtonEnabled ? _sendActivationLink : null,
-                child: Text("Yeni Kullanıcı Oluştur"),
+                child: const Text("Yeni Kullanıcı Oluştur"),
               ),
             ],
           ),

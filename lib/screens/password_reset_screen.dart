@@ -4,7 +4,7 @@ import 'package:mailer/smtp_server.dart';
 
 class PasswordResetScreen extends StatefulWidget {
   final String email; // Maskelenmiş e-posta adresi
-  PasswordResetScreen({required this.email});
+  const PasswordResetScreen({super.key, required this.email});
 
   @override
   _PasswordResetScreenState createState() => _PasswordResetScreenState();
@@ -38,7 +38,7 @@ class _PasswordResetScreenState extends State<PasswordResetScreen> {
       SnackBar(
         content: Text(message),
         backgroundColor: isError ? Colors.red : Colors.green,
-        duration: Duration(seconds: 3),
+        duration: const Duration(seconds: 3),
       ),
     );
   }
@@ -57,12 +57,12 @@ class _PasswordResetScreenState extends State<PasswordResetScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Şifre Sıfırlama'),
+        title: const Text('Şifre Sıfırlama'),
       ),
       body: Center(
         child: Container(
           width: MediaQuery.of(context).size.width * 0.75,
-          padding: EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16.0),
           decoration: BoxDecoration(
             color: Colors.grey[200],
             borderRadius: BorderRadius.circular(12),
@@ -78,29 +78,29 @@ class _PasswordResetScreenState extends State<PasswordResetScreen> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              const Text(
                 'Şifre sıfırlama işlemi için aşağıdaki E-Posta adresinizi doğrulayın',
                 style: TextStyle(fontSize: 16),
               ),
-              SizedBox(height: 20),
-              Text(
+              const SizedBox(height: 20),
+              const Text(
                 'Girilen E-Posta: ',
                 // ${_maskEmail(widget.email)}',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               TextField(
                 controller: _emailController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'E-Posta Adresinizi Girin',
                 ),
-                style: TextStyle(fontSize: 16),
+                style: const TextStyle(fontSize: 16),
               ),
-              SizedBox(height: 24),
+              const SizedBox(height: 24),
               ElevatedButton(
                 onPressed: _isButtonEnabled ? _sendResetLink : null,
-                child: Text('Şifre Sıfırlama Linkini Gönder'),
+                child: const Text('Şifre Sıfırlama Linkini Gönder'),
               ),
             ],
           ),

@@ -1,3 +1,4 @@
+// xproposal_screen.dart
 import 'package:flutter/material.dart';
 
 class XProposalPage extends StatelessWidget {
@@ -5,13 +6,10 @@ class XProposalPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('X Proposal Page'),
+        title: Text("X Proposal Page"),
       ),
       body: Center(
-        child: Text(
-          'Bu bir boş sayfadır.',
-          style: TextStyle(fontSize: 20),
-        ),
+        child: Text("This is the XProposalPage"),
       ),
     );
   }

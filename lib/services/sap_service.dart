@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import '../models/register_model.dart';
+import 'package:xproposal/models/vendor.dart';
 
 class SAPService {
-  final String _baseUrl = "https://10.1.4.21:44300/zcxp_vendor_srv/VENDOR";
+  final String _baseUrl = "http://10.1.4.21:50000/zxproposal";
   final String _username = "sdemirtag";
   final String _password = "Codex2024*";
 
@@ -124,4 +124,28 @@ class SAPService {
       throw Exception("Kullanıcı kaydı başarısız: ${response.body}");
     }
   }
+
+
+
+  Future<List<Vendor>> fetchVendors({String? vendorNo}) async {
+  final url = vendorNo != null
+      ? '$_baseUrl/VENDOR_LIST?VENDOR_NO=$vendorNo'
+      : '$_baseUrl/VENDOR_LIST';
+
+  final response = await http.get(
+    Uri.parse(url),
+    headers: {
+      'Authorization': 'Basic ${base64Encode(utf8.encode("$_username:$_password"))}',
+      'Content-Type': 'application/json',
+    },
+  );
+
+  if (response.statusCode == 200) {
+    final List<dynamic> jsonList = jsonDecode(response.body);
+    return jsonList.map((json) => Vendor.fromJson(json)).toList();
+  } else {
+    throw Exception("Vendor listesi alınamadı: ${response.statusCode}");
+  }
+}
+
 }
