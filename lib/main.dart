@@ -6,10 +6,12 @@ import 'screens/password_setup_screen.dart';
 import 'screens/register_screen.dart';
 
 void main() async{
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -19,10 +21,10 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => LoginScreen(),
-        '/passwordReset': (context) => PasswordResetScreen(email: 'aaaaa',),
-        '/passwordSetup': (context) => PasswordSetupScreen(),
-        '/register': (context) => RegisterScreen(),
+        '/': (context) => const LoginScreen(),
+        '/passwordReset': (context) => const PasswordResetScreen(email: 'aaaaa',),
+        '/passwordSetup': (context) => const PasswordSetupScreen(),
+        '/register': (context) => const RegisterScreen(),
       },
     );
   }

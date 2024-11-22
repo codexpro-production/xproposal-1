@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:xproposal/models/vendor.dart';
+
+import '../models/vendor.dart';
 
 class SAPService {
   final String _baseUrl = "http://10.1.4.21:50000/zxproposal";
