@@ -5,23 +5,42 @@ import '../models/vendor.dart';
 class SAPService {
   final String _baseUrl = "https://cors-anywhere.herokuapp.com/http://10.1.4.21:50000/zxproposal";
 
-  final String _username = "bkurt";
-  final String _password = "Artvin0808";
+  final String _username = "sdemirtag";
+  final String _password = "Codex2024*";
 
-  // Helper method to get headers
+
+  Future<List<Vendor>> fetchVendors({String? vendorNo}) async {
+    final url = vendorNo != null
+        ? '$_baseUrl/VENDOR_LIST?VENDOR_NO=$vendorNo'
+        : '$_baseUrl/VENDOR_LIST';
+
+    final response = await http.get(
+      Uri.parse(url),
+      headers: _getHeaders(),
+    );
+
+    if (response.statusCode == 200) {
+      final List<dynamic> jsonList = jsonDecode(response.body);
+      return jsonList.map((json) => Vendor.fromJson(json)).toList();
+    } else {
+      _handleError(response);
+    }
+
+    throw Exception("Unexpected error occurred while fetching vendors.");
+  }
+
   Map<String, String> _getHeaders() {
     return {
       'Authorization': 'Basic ${base64Encode(utf8.encode("$_username:$_password"))}',
       'Content-Type': 'application/json',
-      'X-Requested-With': 'XMLHttpRequest',  // Add this header
+      'X-Requested-With': 'XMLHttpRequest',
     };
   }
 
-
-  // Helper method to handle errors
   void _handleError(http.Response response) {
     throw Exception("HTTP Error: ${response.statusCode}, Body: ${response.body}");
   }
+
 
   // User authentication
   Future<Map<String, dynamic>> authenticateUser(String username, String password) async {
@@ -123,7 +142,7 @@ class SAPService {
     );
 
     if (response.statusCode == 200) {
-      return true; // Successfully registered
+      return true;
     } else {
       _handleError(response);
     }
@@ -131,24 +150,5 @@ class SAPService {
     throw Exception("Unexpected error during user registration.");
   }
 
-  // Fetch vendors
-  Future<List<Vendor>> fetchVendors({String? vendorNo}) async {
-    final url = vendorNo != null
-        ? '$_baseUrl/VENDOR_LIST?VENDOR_NO=$vendorNo'
-        : '$_baseUrl/VENDOR_LIST';
-
-    final response = await http.get(
-      Uri.parse(url),
-      // headers: _getHeaders(),
-    );
-
-    if (response.statusCode == 200) {
-      final List<dynamic> jsonList = jsonDecode(response.body);
-      return jsonList.map((json) => Vendor.fromJson(json)).toList();
-    } else {
-      _handleError(response);
-    }
-
-    throw Exception("Unexpected error occurred while fetching vendors.");
-  }
+  
 }
