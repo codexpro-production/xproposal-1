@@ -1,13 +1,13 @@
 class Vendor {
-  final String lifnr;
   final String name1;
+  final String lifnr;
 
-  Vendor({required this.lifnr, required this.name1});
+  Vendor({required this.name1, required this.lifnr});
 
   factory Vendor.fromJson(Map<String, dynamic> json) {
     return Vendor(
-      lifnr: json['lifnr'],
-      name1: json['name1'],
+      name1: json['name1'] ?? 'Unknown',
+      lifnr: json['lifnr'] ?? '000000',
     );
   }
 }
