@@ -1,5 +1,5 @@
-import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'dart:convert';
 import '../models/vendor.dart';
 
 class SAPService {
@@ -129,26 +129,22 @@ class SAPService {
     }
   }
 
-  // Register user
-  Future<bool> registerUser(String username, String email, String password) async {
-    final response = await http.post(
-      Uri.parse("$_baseUrl/registerUser"),
-      headers: _getHeaders(),
-      body: jsonEncode({
-        'username': username,
-        'email': email,
-        'password': password,
-      }),
-    );
+  // // Register user
+  // Future<bool> registerUser(String username, String email, String password) async {
+  //   final response = await http.post(
+  //     Uri.parse("$_baseUrl/registerUser"),
+  //     headers: _getHeaders(),
+  //     body: jsonEncode({
+  //       'username': username,
+  //       'email': email,
+  //       'password': password,
+  //     }),
+  //   );
 
-    if (response.statusCode == 200) {
-      return true;
-    } else {
-      _handleError(response);
-    }
-
-    throw Exception("Unexpected error during user registration.");
-  }
-
-  
+  //   if (response.statusCode == 200) {
+  //     return true;
+  //   } else {
+  //     _handleError(response);
+  //   }
+  // }
 }

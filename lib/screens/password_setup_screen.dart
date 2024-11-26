@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
-// import '../services/sap_service.dart'; // SAP servis importunu geçici olarak yorum satırı haline getirdik
 
 class PasswordSetupScreen extends StatefulWidget {
   const PasswordSetupScreen({super.key});
@@ -106,12 +105,12 @@ class _PasswordSetupScreenState extends State<PasswordSetupScreen> {
               ElevatedButton(
                 onPressed: _setupPassword,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.purpleAccent, // Buton arka plan rengi
-                  foregroundColor: Colors.white,       // Buton metin rengi
+                  backgroundColor: Colors.purpleAccent,
+                  foregroundColor: Colors.white,       
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30), // Yuvarlak köşe
+                    borderRadius: BorderRadius.circular(30),
                   ),
-                  padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 14), // İç boşluk
+                  padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 14),
                 ),
                 child: const Text("Şifreyi Kaydet", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
               ),
@@ -130,14 +129,12 @@ class _PasswordSetupScreenState extends State<PasswordSetupScreen> {
     );
   }
 
-  // Gereksinimleri gösteren widget
   Widget _buildRequirementRow(String text, bool isValid) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Yuvarlak işaret (onaylı ya da reddedilmiş)
           CircleAvatar(
             radius: 12,
             backgroundColor: isValid ? Colors.green : Colors.red,
@@ -159,7 +156,6 @@ class _PasswordSetupScreenState extends State<PasswordSetupScreen> {
     );
   }
 
-  // Şifre alanı için input widget'ı
   Widget _buildPasswordField(String label, TextEditingController controller, bool isVisible, bool isNewPasswordField) {
     return TextField(
       controller: controller,
@@ -175,19 +171,16 @@ class _PasswordSetupScreenState extends State<PasswordSetupScreen> {
     );
   }
 
-  // Şifreyi hashleme fonksiyonu
   String hashPassword(String password) {
     final bytes = utf8.encode(password);
     final hashed = sha256.convert(bytes);
     return hashed.toString();
   }
 
-  // Şifreyi ayarlama fonksiyonu
   void _setupPassword() {
     final newPassword = _newPasswordController.text;
     final confirmPassword = _confirmPasswordController.text;
 
-    // Yeni şifre ya da şifre tekrarının boş olup olmadığını kontrol et
     if (newPassword.isEmpty) {
       setState(() => _errorMessage = "Yeni şifreyi girin");
       return;
@@ -197,34 +190,20 @@ class _PasswordSetupScreenState extends State<PasswordSetupScreen> {
       return;
     }
 
-    // Şifre gereksinimlerini kontrol et
     if (!(_isLengthValid && _hasUppercase && _hasLowercase && _hasDigit && _hasSpecialChar)) {
       setState(() => _errorMessage = "Lütfen tüm şifre gereksinimlerini sağlayın!");
       return;
     }
 
-    // Şifrelerin uyuşup uyuşmadığını kontrol et
     if (newPassword != confirmPassword) {
       setState(() => _errorMessage = "Şifreler uyuşmuyor");
       return;
     }
 
-    // Şifreyi hashle
     final hashedPassword = hashPassword(newPassword);
 
-    // SAP servis işlemlerini geçici olarak yorum satırına aldık
     print("Yeni Şifre (Hashlenmiş): $hashedPassword");
 
-    // Buradaki SAP işlemleri geçici olarak şu şekilde yorumlanmıştır:
-    /*
-    SAPService().updatePassword(hashedPassword).then((_) {
-      print("Şifre başarıyla güncellendi!");
-    }).catchError((error) {
-      print("Hata: $error");
-    });
-    */
-
-    // Şifre başarılı şekilde belirlenince login ekranına yönlendir
     print("Şifre başarıyla kaydedildi!");
     Navigator.pushReplacementNamed(context, '/');
   }

@@ -1,7 +1,6 @@
 import 'dart:html' as html;
 import 'package:flutter/material.dart';
-// import '../services/sap_service.dart'; // SAP servisi şimdilik yorum satırına alındı
-import '../widgets/captcha_widget.dart'; // reCAPTCHA widget'ını dahil edin
+import '../widgets/captcha_widget.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -12,19 +11,18 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final _passwordController = TextEditingController();
-  final _tcVknController = TextEditingController(); // TC Kimlik Numarası veya VKN için kontrol
+  final _tcVknController = TextEditingController();
   bool _obscureText = true;
   String? _captchaToken;
-  String _captchaFeedback = '';  // CAPTCHA geri bildirim mesajı
-  String _tcVknFeedback = '';  // TC Kimlik veya VKN geri bildirim mesajı
+  String _captchaFeedback = '';
+  String _tcVknFeedback = '';
 
   @override
   void initState() {
     super.initState();
 
-    // reCAPTCHA'dan gelen token'ı dinleyin ve doğrulamayı başlatın
     html.window.onMessage.listen((msg) {
-      String token = msg.data; // reCAPTCHA yanıt token'ı
+      String token = msg.data;
       setState(() {
         _captchaToken = token;
       });
@@ -32,11 +30,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   bool isValidTcOrVkn(String value) {
-    // 11 haneli olup olmadığını kontrol et
-    if (value.length != 11 || !RegExp(r'^[0-9]+$').hasMatch(value)) {
-      return false;
-    }
-    return true;
+    return value.length == 11 && RegExp(r'^[0-9]+$').hasMatch(value);
   }
 
   @override
@@ -44,75 +38,68 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       body: LayoutBuilder(
         builder: (context, constraints) {
-          double imageWidth = constraints.maxWidth > 600
-              ? MediaQuery.of(context).size.width * 0.4
-              : MediaQuery.of(context).size.width * 0.5;
+          // Görüntüleme boyutlarını ayarlama
+          double imageWidth = constraints.maxWidth > 800
+              ? MediaQuery.of(context).size.width * 0.5
+              : MediaQuery.of(context).size.width * 0.4;
 
           return Row(
             children: [
-              // Sol kısımda fotoğraf alanı
-              Container(
-                width: imageWidth,
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage('assets/images/login_image.jpg'),
-                    fit: BoxFit.cover,
+              if (constraints.maxWidth > 800)
+                Container(
+                  width: imageWidth,
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage('assets/images/login_image.jpg'),
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
-              ),
-
-              // Sağ kısımda form alanı
               Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text(
-                        "Hoşgeldiniz",
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-
-                      Container(
-                        padding: const EdgeInsets.all(16),
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 32),
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 500),
+                      child: Container(
+                        padding: const EdgeInsets.all(24),
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
+                          borderRadius: BorderRadius.circular(12),
                           color: Colors.white,
                           boxShadow: [
                             BoxShadow(
-                              blurRadius: 10,
-                              spreadRadius: 2,
-                              color: Colors.grey.withOpacity(0.2),
+                              blurRadius: 12,
+                              spreadRadius: 4,
+                              color: Colors.grey.withOpacity(0.25),
                             ),
                           ],
                         ),
                         child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
+                            const Text(
+                              "HOŞGELDİNİZ",
+                              style: TextStyle(
+                                fontSize: 28,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(height: 24),
+
                             TextField(
                               controller: _tcVknController,
                               decoration: const InputDecoration(
                                 labelText: "*TC Kimlik Numarası veya VKN",
                                 prefixIcon: Icon(Icons.credit_card),
+                                border: OutlineInputBorder(),
                               ),
-                              maxLength: 11,  // Sadece 11 haneli girişe izin ver
-                              keyboardType: TextInputType.number, // Sayısal giriş için
+                              maxLength: 11,
+                              keyboardType: TextInputType.number,
                             ),
-                            const SizedBox(height: 16),
-
-                                                                                                                                              // TC Kimlik No veya VKN geri bildirim mesajı
                             if (_tcVknFeedback.isNotEmpty)
-                              Container(
-                                padding: const EdgeInsets.all(12),
-                                decoration: BoxDecoration(
-                                  color: _tcVknFeedback.contains("geçerli")
-                                      ? Colors.green[100]
-                                      : Colors.red[100],
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 8.0),
                                 child: Text(
                                   _tcVknFeedback,
                                   style: TextStyle(
@@ -131,6 +118,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               decoration: InputDecoration(
                                 labelText: "*Şifre",
                                 prefixIcon: const Icon(Icons.lock),
+                                border: const OutlineInputBorder(),
                                 suffixIcon: IconButton(
                                   icon: Icon(_obscureText
                                       ? Icons.visibility
@@ -151,34 +139,26 @@ class _LoginScreenState extends State<LoginScreen> {
                                 onPressed: () {
                                   Navigator.pushNamed(context, '/passwordReset');
                                 },
-                                child: const Text("Şifremi Unuttum",
-                                    style: TextStyle(color: Colors.blue)),
+                                child: const Text(
+                                  "Şifremi Unuttum",
+                                  style: TextStyle(color: Colors.blue),
+                                ),
                               ),
                             ),
 
+                            const SizedBox(height: 16),
                             CaptchaWidget(
                               onValidate: (isValid) {
                                 setState(() {
-                                  if (isValid) {
-                                    _captchaFeedback = "CAPTCHA doğru!";
-                                  } else {
-                                    _captchaFeedback = "Lütfen tekrar deneyin.";
-                                  }
+                                  _captchaFeedback = isValid
+                                      ? "CAPTCHA doğru!"
+                                      : "Lütfen tekrar deneyin.";
                                 });
                               },
-                            ),  // CAPTCHA alanı
-                            const SizedBox(height: 10),
-
-                            // CAPTCHA geri bildirim mesajı
+                            ),
                             if (_captchaFeedback.isNotEmpty)
-                              Container(
-                                padding: const EdgeInsets.all(12),
-                                decoration: BoxDecoration(
-                                  color: _captchaFeedback.contains("doğru")
-                                      ? Colors.green[100]
-                                      : Colors.red[100],
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 8.0),
                                 child: Text(
                                   _captchaFeedback,
                                   style: TextStyle(
@@ -189,11 +169,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ),
                                 ),
                               ),
-
-                            const SizedBox(height: 20),
+                            const SizedBox(height: 24),
 
                             ElevatedButton(
                               onPressed: _login,
+                              style: ElevatedButton.styleFrom(
+                                minimumSize: const Size(double.infinity, 48),
+                              ),
                               child: const Text("Giriş Yap"),
                             ),
                             const SizedBox(height: 16),
@@ -201,27 +183,15 @@ class _LoginScreenState extends State<LoginScreen> {
                               onPressed: () {
                                 Navigator.pushNamed(context, '/register');
                               },
-                              child: const Text("Kayıt Ol",
-                                  style: TextStyle(color: Colors.blue)),
+                              child: const Text(
+                                "Kayıt Ol",
+                                style: TextStyle(color: Colors.blue),
+                              ),
                             ),
                           ],
                         ),
                       ),
-                      const SizedBox(height: 20),
-
-                      const Text(
-                        "* İşaretli alanların doldurulması zorunludur.",
-                        style: TextStyle(fontSize: 12, color: Colors.grey),
-                      ),
-
-                      const SizedBox(height: 16),
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/helpDocument');
-                        },
-                        child: const Text("Yardım Dokümanı"),
-                      ),
-                    ],
+                    ),
                   ),
                 ),
               ),
@@ -238,20 +208,16 @@ class _LoginScreenState extends State<LoginScreen> {
 
     if (tcVkn.isEmpty || !isValidTcOrVkn(tcVkn)) {
       setState(() {
-        _tcVknFeedback = "TC Kimlik Numarası-VKN eksik ";
+        _tcVknFeedback = "TC Kimlik Numarası veya VKN eksik";
       });
       return;
     }
 
     try {
-      // SAP işlemleri şimdilik devre dışı bırakıldı.
-      // final user = await SAPService().authenticateUserByTcVkn(tcVkn, password);
-      
-      // Geçici olarak başarılı bir giriş sağlanmış gibi simüle edelim
-      const user = true; // Bu kısmı geçici olarak simüle ediyoruz.
-      
+      const user = true;
+
       if (user) {
-        Navigator.pushReplacementNamed(context, '/home');
+        Navigator.pushReplacementNamed(context, '/');
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("Kullanıcı adı veya şifre hatalı.")),
@@ -263,4 +229,4 @@ class _LoginScreenState extends State<LoginScreen> {
       );
     }
   }
-} 
+}

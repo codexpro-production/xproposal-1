@@ -5,7 +5,6 @@ import 'screens/password_setup_screen.dart';
 import 'screens/register_screen.dart';
 import 'screens/vendor_list_screen.dart';
 
-
 void main() async{
   runApp(const MyApp());
 }
@@ -20,13 +19,13 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: '/vendorList',
+      initialRoute: '/',
       routes: {
-        '/': (context) => const LoginScreen(),
-        '/passwordReset': (context) => const PasswordResetScreen(email: 'aaaaa',),
-        '/passwordSetup': (context) => const PasswordSetupScreen(),
-        '/register': (context) => const RegisterScreen(),
-        '/vendorList': (context) => const VendorListScreen(),
+        '/': (context) => LoginScreen(),
+        '/passwordReset': (context) => PasswordResetScreen(),
+        '/passwordSetup': (context) => PasswordSetupScreen(),
+        '/register': (context) => RegisterScreen(),
+        '/vendorList': (context) => VendorListScreen(),
       },
     );
   }

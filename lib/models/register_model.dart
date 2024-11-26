@@ -10,7 +10,6 @@ class Register {
     required this.isBlocked,
   });
 
-  // JSON verisini User modeline dönüştürme
   factory Register.fromJson(Map<String, dynamic> json) {
     return Register(
       vknTckn: json['vknTckn'],

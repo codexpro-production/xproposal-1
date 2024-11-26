@@ -1,55 +1,86 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class PasswordResetScreen extends StatefulWidget {
-  final String email; // Maskelenmiş e-posta adresi
-  const PasswordResetScreen({super.key, required this.email});
+  const PasswordResetScreen({super.key});
 
   @override
   _PasswordResetScreenState createState() => _PasswordResetScreenState();
 }
 
 class _PasswordResetScreenState extends State<PasswordResetScreen> {
-  final _emailController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final formKey = GlobalKey<FormState>();
+
   bool _isButtonEnabled = false;
+
+Future<void> sendEmail({required String email}) async {
+  final serviceId = 'service_4xb957a';
+  final templateId = 'template_denoaiu';
+  final userId = 'VBEKKB7TmBjSpPKIj';  
+
+  final url = Uri.parse('https://api.emailjs.com/api/v1.0/email/send');
+  try {
+    final response = await http.post(
+      url,
+      headers: {
+        'origin': '*',  
+        'Content-Type': 'application/json',
+      },
+      body: json.encode({
+        'service_id': serviceId,
+        'template_id': templateId,
+        'user_id': userId,
+        'template_params':{
+          'user_email': email,
+        },
+      }),
+    );
+    if (response.statusCode == 200) {
+      // Email sent successfully
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Başarılı'),
+            content: const Text('Şifre sıfırlama linki gönderildi. Lütfen mail adresinizi kontrol edin.'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();  // Close the dialog
+                },
+                child: const Text('Tamam'),
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      // Failed to send email
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to send email: ${response.body}')),
+      );
+    }
+  } catch (error) {
+    // Error occurred
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('An error occurred: $error')),
+    );
+  }
+}
 
   @override
   void initState() {
     super.initState();
-    _emailController.text = ""; // Input boş olacak şekilde başlatıyoruz
-    _emailController.addListener(_checkFields); // E-posta adresi kontrolü
+    _emailController.addListener(_checkFields);
   }
 
-  // E-posta doğrulama ve butonun aktif olup olmadığını kontrol etme
   void _checkFields() {
     setState(() {
-      _isButtonEnabled = _emailController.text == widget.email;
+      _isButtonEnabled = _emailController.text.isNotEmpty;
     });
   }
-
-  // Şifre sıfırlama bağlantısını e-posta ile gönderme
-  Future<void> _sendResetLink() async {
-   
-  }
-
-  void _showToast(String message, {bool isError = false}) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        backgroundColor: isError ? Colors.red : Colors.green,
-        duration: const Duration(seconds: 3),
-      ),
-    );
-  }
-
-  // // E-posta adresinin maskelenmesi
-  // String _maskEmail(String email) {
-  //   final emailParts = email.split('@');
-  //   if (emailParts[0].length <= 3) {
-  //     return '${emailParts[0]}@${emailParts[1]}';
-  //   }
-  //   final masked = emailParts[0].substring(0, 3) + '*****@' + emailParts[1];
-  //   return masked;
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -59,10 +90,10 @@ class _PasswordResetScreenState extends State<PasswordResetScreen> {
       ),
       body: Center(
         child: Container(
-          width: MediaQuery.of(context).size.width * 0.75,
+          width: MediaQuery.of(context).size.width * 0.4,
           padding: const EdgeInsets.all(16.0),
           decoration: BoxDecoration(
-            color: Colors.grey[200],
+            color: Colors.white,
             borderRadius: BorderRadius.circular(12),
             boxShadow: [
               BoxShadow(
@@ -72,35 +103,58 @@ class _PasswordResetScreenState extends State<PasswordResetScreen> {
               ),
             ],
           ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'Şifre sıfırlama işlemi için aşağıdaki E-Posta adresinizi doğrulayın',
-                style: TextStyle(fontSize: 16),
-              ),
-              const SizedBox(height: 20),
-              const Text(
-                'Girilen E-Posta: ',
-                // ${_maskEmail(widget.email)}',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 20),
-              TextField(
-                controller: _emailController,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'E-Posta Adresinizi Girin',
+          child: Form(
+            key: formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Şifre sıfırlama işlemi için aşağıdaki E-Posta adresinizi doğrulayın',
+                  style: TextStyle(fontSize: 16),
                 ),
-                style: const TextStyle(fontSize: 16),
-              ),
-              const SizedBox(height: 24),
-              ElevatedButton(
-                onPressed: _isButtonEnabled ? _sendResetLink : null,
-                child: const Text('Şifre Sıfırlama Linkini Gönder'),
-              ),
-            ],
+                const SizedBox(height: 20),
+                const Text(
+                  'Sistemdeki E-Posta Adresiniz: ',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 20),
+                TextFormField(
+                  controller: _emailController,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'E-Posta Adresinizi Girin',
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter an email';
+                    } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+                      return 'Enter a valid email';
+                    }
+                    return null;
+                  },
+                  style: const TextStyle(fontSize: 16),
+                ),
+                const SizedBox(height: 24),
+                ElevatedButton(
+                  onPressed: _isButtonEnabled
+                      ? () {
+                          if (formKey.currentState!.validate()) {
+                            sendEmail(email: _emailController.text);
+                          }
+                        }
+                      : null,
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size(double.infinity, 50),
+                    backgroundColor: Colors.blue[700],
+                  ),
+                  child: const Text(
+                    'Şifre Sıfırlama Linkini Gönder',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
