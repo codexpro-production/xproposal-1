@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../services/mail_service.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
