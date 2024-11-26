@@ -1,0 +1,687 @@
+[
+    {
+      "lifnr": "0010300015",
+      "name1": "Inlandslieferant DE15",
+      "email": ""
+    },
+    {
+      "lifnr": "0017300031",
+      "name1": "Foreign US Supplier (DE) 1042S",
+      "email": ""
+    },
+    {
+      "lifnr": "0010200001",
+      "name1": "Supplier/Customer for Intrasta",
+      "email": ""
+    },
+    {
+      "lifnr": "0017300273",
+      "name1": "Domestic US Supplier CPD",
+      "email": ""
+    },
+    {
+      "lifnr": "0010300016",
+      "name1": "Inlandslieferant DE16",
+      "email": ""
+    },
+    {
+      "lifnr": "0017300002",
+      "name1": "Domestic US Supplier 2",
+      "email": ""
+    },
+    {
+      "lifnr": "0017300032",
+      "name1": "Domestic US Supplier 1099G Wit",
+      "email": ""
+    },
+    {
+      "lifnr": "0017300033",
+      "name1": "Domestic US Supplier 1099INT W",
+      "email": ""
+    },
+    {
+      "lifnr": "0017300034",
+      "name1": "Domestic US Supplier 1099K Wit",
+      "email": ""
+    },
+    {
+      "lifnr": "DVVEND_US",
+      "name1": "Digital Vehicle Vendor Company",
+      "email": ""
+    },
+    {
+      "lifnr": "0017300090",
+      "name1": "Domestic US Supplier 90 (Ariba",
+      "email": ""
+    },
+    {
+      "lifnr": "0010300017",
+      "name1": "Inlandslieferant DE17",
+      "email": ""
+    },
+    {
+      "lifnr": "0010300019",
+      "name1": "Inlandslieferant DE19",
+      "email": ""
+    },
+    {
+      "lifnr": "0017300007",
+      "name1": "Domestic US Subcontractor A",
+      "email": ""
+    },
+    {
+      "lifnr": "EWM17-SU01",
+      "name1": "EWM Supplier 01",
+      "email": ""
+    },
+    {
+      "lifnr": "DVVEND_DE",
+      "name1": "Digital Vehicle Vendor Company",
+      "email": ""
+    },
+    {
+      "lifnr": "USSU-VSF01",
+      "name1": "EV Parts Inc.",
+      "email": ""
+    },
+    {
+      "lifnr": "USSU-VSF02",
+      "name1": "WaveCrest Labs",
+      "email": ""
+    },
+    {
+      "lifnr": "USSU-VSF03",
+      "name1": "VF Vendor 03",
+      "email": ""
+    },
+    {
+      "lifnr": "USSU-VSF04",
+      "name1": "USSU-VSF04",
+      "email": ""
+    },
+    {
+      "lifnr": "USSU-VSF05",
+      "name1": "VF Vendor 05",
+      "email": ""
+    },
+    {
+      "lifnr": "USSU-VSF06",
+      "name1": "VF Vendor 06",
+      "email": ""
+    },
+    {
+      "lifnr": "USSU-VSF07",
+      "name1": "VF Vendor 07",
+      "email": ""
+    },
+    {
+      "lifnr": "USSU-VSF08",
+      "name1": "VF Vendor 08",
+      "email": ""
+    },
+    {
+      "lifnr": "USSU-VSF50",
+      "name1": "BeSafe Inc",
+      "email": ""
+    },
+    {
+      "lifnr": "USSU-VSF51",
+      "name1": "MedInc",
+      "email": ""
+    },
+    {
+      "lifnr": "USSU-VSF52",
+      "name1": "RetireYou",
+      "email": ""
+    },
+    {
+      "lifnr": "USSU-VSF53",
+      "name1": "\"KeepCurrent, Inc\"",
+      "email": ""
+    },
+    {
+      "lifnr": "USSU-VSF54",
+      "name1": "\"FindYou, Inc\"",
+      "email": ""
+    },
+    {
+      "lifnr": "USSU-VSF55",
+      "name1": "\"WholeInsure, Inc\"",
+      "email": ""
+    },
+    {
+      "lifnr": "USSU-VSF56",
+      "name1": "\"LabAudit, Inc\"",
+      "email": ""
+    },
+    {
+      "lifnr": "ABC",
+      "name1": "BPINST",
+      "email": ""
+    },
+    {
+      "lifnr": "0010300082",
+      "name1": "Inlandslieferant DE (Ariba Sou",
+      "email": ""
+    },
+    {
+      "lifnr": "0010300002",
+      "name1": "Inlandslieferant DE 2",
+      "email": ""
+    },
+    {
+      "lifnr": "0010300273",
+      "name1": "Inlandslieferant DE CPD",
+      "email": ""
+    },
+    {
+      "lifnr": "0010300006",
+      "name1": "Inlandslieferant DE 6 (Retoure",
+      "email": ""
+    },
+    {
+      "lifnr": "EWM10-SU01",
+      "name1": "EWM-Lieferant 01",
+      "email": ""
+    },
+    {
+      "lifnr": "0010300080",
+      "name1": "Inlandslieferant DE (Ariba Net",
+      "email": ""
+    },
+    {
+      "lifnr": "0010300081",
+      "name1": "Inlandslieferant DE (Ariba Sou",
+      "email": ""
+    },
+    {
+      "lifnr": "0010300083",
+      "name1": "Inlandslieferant DE (Ariba Sou",
+      "email": ""
+    },
+    {
+      "lifnr": "0010300007",
+      "name1": "Inland-Lohnbearbeiter A, DE",
+      "email": ""
+    },
+    {
+      "lifnr": "0010300090",
+      "name1": "Inlandslieferant DE (Ariba FIN",
+      "email": ""
+    },
+    {
+      "lifnr": "0010300010",
+      "name1": "Inlandslieferant DE 1",
+      "email": ""
+    },
+    {
+      "lifnr": "9980000000",
+      "name1": "doe jean",
+      "email": ""
+    },
+    {
+      "lifnr": "0003000010",
+      "name1": "Demo Supplier Company A",
+      "email": ""
+    },
+    {
+      "lifnr": "0017300010",
+      "name1": "Domestic US Supplier 10",
+      "email": ""
+    },
+    {
+      "lifnr": "0010100002",
+      "name1": "Inlandskunde DE 2",
+      "email": ""
+    },
+    {
+      "lifnr": "0017300080",
+      "name1": "Domestic US Supplier (Ariba Ne",
+      "email": ""
+    },
+    {
+      "lifnr": "0017300081",
+      "name1": "Domestic US Supplier (Ariba So",
+      "email": ""
+    },
+    {
+      "lifnr": "0017300082",
+      "name1": "Domestic US Supplier (Ariba So",
+      "email": ""
+    },
+    {
+      "lifnr": "0017300083",
+      "name1": "Domestic US Supplier (Ariba So",
+      "email": ""
+    },
+    {
+      "lifnr": "0017401710",
+      "name1": "SAP SE",
+      "email": ""
+    },
+    {
+      "lifnr": "9980000030",
+      "name1": "Franz Musterman",
+      "email": ""
+    },
+    {
+      "lifnr": "9980000065",
+      "name1": "Barbara Lee",
+      "email": ""
+    },
+    {
+      "lifnr": "9980000064",
+      "name1": "Matthew Carter",
+      "email": ""
+    },
+    {
+      "lifnr": "0000643266",
+      "name1": "Jennifer Stone",
+      "email": ""
+    },
+    {
+      "lifnr": "9980000130",
+      "name1": "Tom Service",
+      "email": ""
+    },
+    {
+      "lifnr": "9980000140",
+      "name1": "James Dispatcher",
+      "email": ""
+    },
+    {
+      "lifnr": "9980000141",
+      "name1": "Mary Technician",
+      "email": ""
+    },
+    {
+      "lifnr": "0010300001",
+      "name1": "Inlandslieferant DE 1",
+      "email": ""
+    },
+    {
+      "lifnr": "0001000109",
+      "name1": "ARP International Ltd",
+      "email": ""
+    },
+    {
+      "lifnr": "9980000070",
+      "name1": "doe jean",
+      "email": ""
+    },
+    {
+      "lifnr": "9980000010",
+      "name1": "Ocean billy",
+      "email": ""
+    },
+    {
+      "lifnr": "9980000100",
+      "name1": "Franz Finance",
+      "email": ""
+    },
+    {
+      "lifnr": "BP1710",
+      "name1": "Plant 1",
+      "email": ""
+    },
+    {
+      "lifnr": "0017300003",
+      "name1": "Domestic US Supplier 3 (with E",
+      "email": ""
+    },
+    {
+      "lifnr": "0017258001",
+      "name1": "JV Operator US",
+      "email": ""
+    },
+    {
+      "lifnr": "0017258002",
+      "name1": "Domestic US JV Partner 1",
+      "email": ""
+    },
+    {
+      "lifnr": "0017258003",
+      "name1": "Domestic US JV Partner 2",
+      "email": ""
+    },
+    {
+      "lifnr": "0010300003",
+      "name1": "Inlandslieferant DE 3 (mit ERS",
+      "email": ""
+    },
+    {
+      "lifnr": "BP1010",
+      "name1": "WERK 1",
+      "email": ""
+    },
+    {
+      "lifnr": "0010300095",
+      "name1": "DE - Sales Commission Recipien",
+      "email": ""
+    },
+    {
+      "lifnr": "MDG_CU02",
+      "name1": "ABC Company 02",
+      "email": ""
+    },
+    {
+      "lifnr": "0017300001",
+      "name1": "Domestic US Supplier 1",
+      "email": ""
+    },
+    {
+      "lifnr": "0017300006",
+      "name1": "Domestic US Supplier 6 (Return",
+      "email": ""
+    },
+    {
+      "lifnr": "9980000170",
+      "name1": "Marilyn Material",
+      "email": ""
+    },
+    {
+      "lifnr": "9980000180",
+      "name1": "Mike Manager",
+      "email": ""
+    },
+    {
+      "lifnr": "0010300096",
+      "name1": "DE - Royalties Recipient",
+      "email": ""
+    },
+    {
+      "lifnr": "0010300085",
+      "name1": "Inlandslieferant DE (ARIBA 42K",
+      "email": ""
+    },
+    {
+      "lifnr": "0010300086",
+      "name1": "Inlandslieferant DE (Ariba 4BL",
+      "email": ""
+    },
+    {
+      "lifnr": "0010300050",
+      "name1": "Foreign Supplier 50 (US)",
+      "email": ""
+    },
+    {
+      "lifnr": "0017386001",
+      "name1": "US TM Carrier1",
+      "email": ""
+    },
+    {
+      "lifnr": "0017386002",
+      "name1": "US TM Carrier2",
+      "email": ""
+    },
+    {
+      "lifnr": "0017386003",
+      "name1": "US TM Carrier3",
+      "email": ""
+    },
+    {
+      "lifnr": "0017386004",
+      "name1": "US TM Carrier4",
+      "email": ""
+    },
+    {
+      "lifnr": "0010300051",
+      "name1": "Foreign Supplier 50 (FR)",
+      "email": ""
+    },
+    {
+      "lifnr": "9980000020",
+      "name1": "Kool Josephine",
+      "email": ""
+    },
+    {
+      "lifnr": "9980000071",
+      "name1": "Barbara Lee",
+      "email": ""
+    },
+    {
+      "lifnr": "9980000072",
+      "name1": "Matthew Carter",
+      "email": ""
+    },
+    {
+      "lifnr": "9980000068",
+      "name1": "Peter Best",
+      "email": ""
+    },
+    {
+      "lifnr": "9980000073",
+      "name1": "Ryan Reval",
+      "email": ""
+    },
+    {
+      "lifnr": "9980000074",
+      "name1": "Ann Anderson",
+      "email": ""
+    },
+    {
+      "lifnr": "9980000075",
+      "name1": "Peter Best",
+      "email": ""
+    },
+    {
+      "lifnr": "9980000066",
+      "name1": "Ryan Reval",
+      "email": ""
+    },
+    {
+      "lifnr": "9980000067",
+      "name1": "Ann Anderson",
+      "email": ""
+    },
+    {
+      "lifnr": "9980000091",
+      "name1": "Tina Team Member",
+      "email": ""
+    },
+    {
+      "lifnr": "0017300095",
+      "name1": "US - Sales Commission Recipien",
+      "email": ""
+    },
+    {
+      "lifnr": "0017300096",
+      "name1": "US - Royalties Recipient",
+      "email": ""
+    },
+    {
+      "lifnr": "0017300085",
+      "name1": "Domestic US Supplier 85 (ARIBA",
+      "email": ""
+    },
+    {
+      "lifnr": "0017300086",
+      "name1": "Domestic US Supplier 86 (Ariba",
+      "email": ""
+    },
+    {
+      "lifnr": "0017300050",
+      "name1": "Foreign Supplier US 50 (CA)",
+      "email": ""
+    },
+    {
+      "lifnr": "0017300051",
+      "name1": "Foreign Supplier US 51 (DE)",
+      "email": ""
+    },
+    {
+      "lifnr": "0017300030",
+      "name1": "Domestic US Supplier 1099M Wit",
+      "email": ""
+    },
+    {
+      "lifnr": "9980000081",
+      "name1": "Paul Portfolio Manager",
+      "email": ""
+    },
+    {
+      "lifnr": "9000000022",
+      "name1": "Timo Team Member",
+      "email": ""
+    },
+    {
+      "lifnr": "9980000090",
+      "name1": "Peter Project Manager",
+      "email": ""
+    },
+    {
+      "lifnr": "9980000092",
+      "name1": "Robert Resource Manager",
+      "email": ""
+    },
+    {
+      "lifnr": "0017386005",
+      "name1": "Domestic US TM Supplier 005",
+      "email": ""
+    },
+    {
+      "lifnr": "0003000001",
+      "name1": "ABC Supplier 02",
+      "email": ""
+    },
+    {
+      "lifnr": "9980000190",
+      "name1": "Luka Mayer",
+      "email": ""
+    },
+    {
+      "lifnr": "9980000200",
+      "name1": "Mary Maintenance",
+      "email": ""
+    },
+    {
+      "lifnr": "BP1001660",
+      "name1": "Plant FORP as Business Partner",
+      "email": ""
+    },
+    {
+      "lifnr": "BP1001650",
+      "name1": "FLOG-SUPP",
+      "email": ""
+    },
+    {
+      "lifnr": "BP1001489",
+      "name1": "FLOG-STO",
+      "email": ""
+    },
+    {
+      "lifnr": "0017300084",
+      "name1": "Domestic US Supplier 84 (EDI)",
+      "email": ""
+    },
+    {
+      "lifnr": "0010401010",
+      "name1": "Buchungskreis 1010 als Geschäf",
+      "email": ""
+    },
+    {
+      "lifnr": "0017411710",
+      "name1": "Plant 1710 US",
+      "email": ""
+    },
+    {
+      "lifnr": "0010411010",
+      "name1": "Werk 1010 als Geschäftspartner",
+      "email": ""
+    },
+    {
+      "lifnr": "VENFLPO",
+      "name1": "VENFLPO",
+      "email": ""
+    },
+    {
+      "lifnr": "0017300015",
+      "name1": "Domestic US Supplier Financing",
+      "email": ""
+    },
+    {
+      "lifnr": "0017300017",
+      "name1": "Domestic Supplier Financ. VCar",
+      "email": ""
+    },
+    {
+      "lifnr": "0017300019",
+      "name1": "Domestic Card Issuer Supplier",
+      "email": ""
+    },
+    {
+      "lifnr": "0017300016",
+      "name1": "Domestic US Supplier Financing",
+      "email": ""
+    },
+    {
+      "lifnr": "0017537006",
+      "name1": "Associate or Joint Venture",
+      "email": ""
+    },
+    {
+      "lifnr": "0001000283",
+      "name1": "Mars Travel Agency",
+      "email": ""
+    },
+    {
+      "lifnr": "0001000284",
+      "name1": "Earth Communications",
+      "email": ""
+    },
+    {
+      "lifnr": "0001000287",
+      "name1": "Venus Hair",
+      "email": ""
+    },
+    {
+      "lifnr": "0001000288",
+      "name1": "Earth Communications",
+      "email": ""
+    },
+    {
+      "lifnr": "0001000441",
+      "name1": "suppla",
+      "email": ""
+    },
+    {
+      "lifnr": "0001000442",
+      "name1": "supplas2",
+      "email": ""
+    },
+    {
+      "lifnr": "0001000459",
+      "name1": "Global AS",
+      "email": ""
+    },
+    {
+      "lifnr": "0000000045",
+      "name1": "test",
+      "email": ""
+    },
+    {
+      "lifnr": "0001000461",
+      "name1": "Parlak Holding",
+      "email": ""
+    },
+    {
+      "lifnr": "0001000462",
+      "name1": "Shine Holding",
+      "email": ""
+    },
+    {
+      "lifnr": "0001000469",
+      "name1": "Tedarikçi Deneme",
+      "email": ""
+    },
+    {
+      "lifnr": "0001000470",
+      "name1": "Tedarikçi Deneme1",
+      "email": ""
+    },
+    {
+      "lifnr": "0001000479",
+      "name1": "deneme tedarikçi BE FLVN01",
+      "email": ""
+    }
+  ]
