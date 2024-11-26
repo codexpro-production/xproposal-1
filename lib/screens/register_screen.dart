@@ -122,11 +122,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             const SizedBox(height: 24),
                             ElevatedButton(
                               onPressed: _isButtonEnabled ? _sendActivationLink : null,
-                              child: const Text("Yeni Kullanıcı Oluştur"),
                               style: ElevatedButton.styleFrom(
                                 minimumSize: const Size(double.infinity, 48),
                                 backgroundColor: Colors.blue,
                               ),
+                              child: const Text("Yeni Kullanıcı Oluştur"),
                             ),
                             // Mesaj alanı
                             if (_message != null) ...[

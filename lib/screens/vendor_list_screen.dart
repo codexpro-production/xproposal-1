@@ -5,7 +5,7 @@ import '../models/vendor.dart';
 // import '../services/sap_service.dart';
 
 class VendorListScreen extends StatefulWidget {
-  const VendorListScreen({Key? key}) : super(key: key);
+  const VendorListScreen({super.key});
 
   @override
   State<VendorListScreen> createState() => _VendorListScreenState();
