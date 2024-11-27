@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:bson/bson.dart';
 import '../services/user_service.dart';
 
 class DatabaseTestScreen extends StatefulWidget {
+  const DatabaseTestScreen({super.key});
+
   @override
   _DatabaseTestScreenState createState() => _DatabaseTestScreenState();
 }
@@ -20,7 +23,7 @@ class _DatabaseTestScreenState extends State<DatabaseTestScreen> {
   Future<void> connectToDatabase() async {
     await userService.connect();
     setState(() {
-      // State update for initial connection if needed
+      // Optionally update state if required, e.g., indicating database connected
     });
   }
 
@@ -34,8 +37,13 @@ class _DatabaseTestScreenState extends State<DatabaseTestScreen> {
   // CRUD operations
   Future<void> createDocument() async {
     await userService.createDocument({
-      'user_vendor': 'Vendor Name',
-      'user_responsible': 'Responsible Name'
+      'purchaseGroup': '',
+      'purchaseGroupText': Int64(123123123123),
+      'telNumber': Int64(123123123),
+      'faxNumber': Int64(123123),
+      'responsible': 123,
+      'email': '',
+      'password': '',
     });
     showMessage("Document created successfully.");
   }
@@ -50,12 +58,12 @@ class _DatabaseTestScreenState extends State<DatabaseTestScreen> {
 
   Future<void> updateDocument() async {
     await userService.updateDocument(
-        {'user_vendor': 'Vendor Name'}, {'\$set': {'user_responsible': 'New Name'}});
+        {'purchaseGroup': ''}, {'\$set': {'responsible': 456}});
     showMessage("Document updated successfully.");
   }
 
   Future<void> deleteDocument() async {
-    await userService.deleteDocument({'user_vendor': 'Vendor Name'});
+    await userService.deleteDocument({'purchaseGroup': ''});
     showMessage("Document deleted successfully.");
   }
 
@@ -102,8 +110,11 @@ class _DatabaseTestScreenState extends State<DatabaseTestScreen> {
                 itemBuilder: (context, index) {
                   final document = documents[index];
                   return ListTile(
-                    title: Text(document['user_vendor'] ?? 'No Vendor'),
-                    subtitle: Text(document['user_responsible'] ?? 'No Responsible'),
+                    title: Text(document['purchaseGroup'] ?? 'No Group'),
+                    subtitle: Text(
+                      'Responsible: ${document['responsible'] ?? 'No Responsible'}',
+                    ),
+                    // You can format any other fields as needed
                   );
                 },
               ),

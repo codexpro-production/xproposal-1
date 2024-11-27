@@ -5,7 +5,6 @@ import 'screens/password_reset_screen.dart';
 import 'screens/password_setup_screen.dart';
 import 'screens/register_screen.dart';
 import 'screens/vendor_list_screen.dart';
-import 'screens/database_test_screen.dart';
 
 void main() async {
   runApp(const MyApp());
@@ -28,8 +27,8 @@ class MyApp extends StatelessWidget {
         '/passwordSetup': (context) => PasswordSetupScreen(),
         '/register': (context) => RegisterScreen(),
         '/vendorList': (context) => VendorListScreen(),
-        '/pdfViewer': (context) => PDFViewerScreen(),
-        // '/databaseTest': (context) => DatabaseTestScreen(),
+        // '/pdfViewer': (context) => PDFViewerScreen(),
+        '/databaseTest': (context) => DatabaseTestScreen(),
       },
     );
   }
