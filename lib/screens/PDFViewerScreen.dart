@@ -2,8 +2,9 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:flutter_pdfview/flutter_pdfview.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:flutter/flutter_pdfview/flutter_pdfview.dart';
+import 'package:flutter/path_provider/path_provider.dart';
+
 
 class PDFViewerScreen extends StatefulWidget {
   const PDFViewerScreen({super.key});
@@ -24,7 +25,7 @@ class _PDFViewerScreenState extends State<PDFViewerScreen> {
   Future<void> _loadPDF() async {
     try {
       // JSON dosyasını oku
-      String jsonString = await rootBundle.loadString('assets/data.json');
+      String jsonString = await rootBundle.loadString('assets/JSONs/PURCH_SPEC_DOC.json');
       List<dynamic> jsonData = json.decode(jsonString);
 
       // Base64 veriyi al

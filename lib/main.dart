@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'screens/PDFViewerScreen.dart';
 import 'screens/login_screen.dart';
 import 'screens/password_reset_screen.dart';
 import 'screens/password_setup_screen.dart';
@@ -20,14 +21,15 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: '/databaseTest',
+      initialRoute: '/pdfViewer',
       routes: {
         '/': (context) => LoginScreen(),
         '/passwordReset': (context) => PasswordResetScreen(),
         '/passwordSetup': (context) => PasswordSetupScreen(),
         '/register': (context) => RegisterScreen(),
         '/vendorList': (context) => VendorListScreen(),
-        '/databaseTest': (context) => DatabaseTestScreen(),
+        '/pdfViewer': (context) => PDFViewerScreen(),
+        // '/databaseTest': (context) => DatabaseTestScreen(),
       },
     );
   }
