@@ -1,6 +1,5 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import '../services/mail_service.dart';  // Import the mail_service.dart file
 
 class PasswordResetScreen extends StatefulWidget {
   const PasswordResetScreen({super.key});
@@ -14,61 +13,6 @@ class _PasswordResetScreenState extends State<PasswordResetScreen> {
   final formKey = GlobalKey<FormState>();
 
   bool _isButtonEnabled = false;
-
-Future<void> sendEmail({required String email}) async {
-  final serviceId = 'service_4xb957a';
-  final templateId = 'template_denoaiu';
-  final userId = 'VBEKKB7TmBjSpPKIj';  
-
-  final url = Uri.parse('https://api.emailjs.com/api/v1.0/email/send');
-  try {
-    final response = await http.post(
-      url,
-      headers: {
-        'origin': '*',  
-        'Content-Type': 'application/json',
-      },
-      body: json.encode({
-        'service_id': serviceId,
-        'template_id': templateId,
-        'user_id': userId,
-        'template_params':{
-          'user_email': email,
-        },
-      }),
-    );
-    if (response.statusCode == 200) {
-      // Email sent successfully
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('Başarılı'),
-            content: const Text('Şifre sıfırlama linki gönderildi. Lütfen mail adresinizi kontrol edin.'),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();  // Close the dialog
-                },
-                child: const Text('Tamam'),
-              ),
-            ],
-          );
-        },
-      );
-    } else {
-      // Failed to send email
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to send email: ${response.body}')),
-      );
-    }
-  } catch (error) {
-    // Error occurred
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('An error occurred: $error')),
-    );
-  }
-}
 
   @override
   void initState() {
@@ -138,9 +82,33 @@ Future<void> sendEmail({required String email}) async {
                 const SizedBox(height: 24),
                 ElevatedButton(
                   onPressed: _isButtonEnabled
-                      ? () {
+                      ? () async {
                           if (formKey.currentState!.validate()) {
-                            sendEmail(email: _emailController.text);
+                            try {
+                              await sendEmail(email: _emailController.text);
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: const Text('Başarılı'),
+                                    content: const Text('Şifre sıfırlama linki gönderildi. Lütfen mail adresinizi kontrol edin.'),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();  // Close the dialog
+                                        },
+                                        child: const Text('Tamam'),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            } catch (error) {
+                              // If an error occurred, show an error message
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text('Error: $error')),
+                              );
+                            }
                           }
                         }
                       : null,
