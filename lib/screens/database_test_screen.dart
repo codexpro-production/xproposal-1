@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:bson/bson.dart';
 import '../services/user_service.dart';
 
 class DatabaseTestScreen extends StatefulWidget {
@@ -10,45 +9,31 @@ class DatabaseTestScreen extends StatefulWidget {
 }
 
 class _DatabaseTestScreenState extends State<DatabaseTestScreen> {
-  final UserService userService = UserService();
+  final UserService userService = UserService(); // Replace with ApiService if using HTTP
   List<Map<String, dynamic>> documents = [];
 
   @override
   void initState() {
     super.initState();
-    connectToDatabase();
+    fetchDocuments(); // Fetch documents on initialization
   }
 
-  // Connect to the database
-  Future<void> connectToDatabase() async {
-    await userService.connect();
-    setState(() {
-      // Optionally update state if required, e.g., indicating database connected
-    });
-  }
-
-  // Disconnect from the database when the widget is disposed
-  @override
-  void dispose() {
-    userService.disconnect();
-    super.dispose();
-  }
-
-  // CRUD operations
+  // CRUD Operations
   Future<void> createDocument() async {
     await userService.createDocument({
-      'purchaseGroup': '',
-      'purchaseGroupText': Int64(123123123123),
-      'telNumber': Int64(123123123),
-      'faxNumber': Int64(123123),
+      'purchaseGroup': 'Group A',
+      'purchaseGroupText': 'Description A',
+      'telNumber': 1234567890,
+      'faxNumber': 9876543210,
       'responsible': 123,
-      'email': '',
-      'password': '',
+      'email': 'test@example.com',
+      'password': 'password123',
     });
     showMessage("Document created successfully.");
+    fetchDocuments(); // Refresh documents list
   }
 
-  Future<void> readDocuments() async {
+  Future<void> fetchDocuments() async {
     final results = await userService.readDocuments();
     setState(() {
       documents = results;
@@ -56,15 +41,19 @@ class _DatabaseTestScreenState extends State<DatabaseTestScreen> {
     showMessage("Documents retrieved successfully.");
   }
 
-  Future<void> updateDocument() async {
-    await userService.updateDocument(
-        {'purchaseGroup': ''}, {'\$set': {'responsible': 456}});
+  Future<void> updateDocument(String id) async {
+    await userService.updateDocument(id, {
+      'purchaseGroupText': 'Updated Description',
+      'responsible': 456,
+    });
     showMessage("Document updated successfully.");
+    fetchDocuments(); // Refresh documents list
   }
 
-  Future<void> deleteDocument() async {
-    await userService.deleteDocument({'purchaseGroup': ''});
+  Future<void> deleteDocument(String id) async {
+    await userService.deleteDocument(id);
     showMessage("Document deleted successfully.");
+    fetchDocuments(); // Refresh documents list
   }
 
   // Helper method to show messages
@@ -76,7 +65,7 @@ class _DatabaseTestScreenState extends State<DatabaseTestScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Database Test Screen"),
+        title: const Text("Database Test Screen"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -85,39 +74,49 @@ class _DatabaseTestScreenState extends State<DatabaseTestScreen> {
           children: [
             ElevatedButton(
               onPressed: createDocument,
-              child: Text("Create Document"),
+              child: const Text("Create Document"),
             ),
             ElevatedButton(
-              onPressed: readDocuments,
-              child: Text("Read Documents"),
+              onPressed: fetchDocuments,
+              child: const Text("Read Documents"),
             ),
-            ElevatedButton(
-              onPressed: updateDocument,
-              child: Text("Update Document"),
-            ),
-            ElevatedButton(
-              onPressed: deleteDocument,
-              child: Text("Delete Document"),
-            ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Text(
               "Retrieved Documents:",
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: const TextStyle(fontWeight: FontWeight.bold),
             ),
             Expanded(
-              child: ListView.builder(
-                itemCount: documents.length,
-                itemBuilder: (context, index) {
-                  final document = documents[index];
-                  return ListTile(
-                    title: Text(document['purchaseGroup'] ?? 'No Group'),
-                    subtitle: Text(
-                      'Responsible: ${document['responsible'] ?? 'No Responsible'}',
+              child: documents.isEmpty
+                  ? const Center(child: Text("No documents found."))
+                  : ListView.builder(
+                      itemCount: documents.length,
+                      itemBuilder: (context, index) {
+                        final document = documents[index];
+                        return ListTile(
+                          title: Text(document['purchaseGroup'] ?? 'No Group'),
+                          subtitle: Text(
+                            'Responsible: ${document['responsible'] ?? 'No Responsible'}',
+                          ),
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                icon: const Icon(Icons.edit),
+                                onPressed: () {
+                                  updateDocument(document['_id']);
+                                },
+                              ),
+                              IconButton(
+                                icon: const Icon(Icons.delete),
+                                onPressed: () {
+                                  deleteDocument(document['_id']);
+                                },
+                              ),
+                            ],
+                          ),
+                        );
+                      },
                     ),
-                    // You can format any other fields as needed
-                  );
-                },
-              ),
             ),
           ],
         ),
