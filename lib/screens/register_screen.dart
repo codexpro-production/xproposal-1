@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../services/user_service.dart';
+import '../services/mail_service.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -8,15 +10,65 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  final _vknTcknController = TextEditingController();
-  final _emailController = TextEditingController();
+   final TextEditingController nameController = TextEditingController();
+  final TextEditingController surnameController = TextEditingController();
+  final TextEditingController tcknVknController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+
   bool _isButtonEnabled = false;
   String? _message;
   Color _messageColor = Colors.green;
 
+
+    Future<void> handleAddUser() async {
+    // TCKN veya VKN kontrolü
+    String? tckn;
+    String? vkn;
+    final tcknVknValue = tcknVknController.text.trim();
+
+    if (tcknVknValue.length == 11) {
+      tckn = tcknVknValue;
+      vkn = null;
+    } else if (tcknVknValue.length == 10) {
+      vkn = tcknVknValue;
+      tckn = null;
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Lütfen geçerli bir TCKN veya VKN girin!")),
+      );
+      return;
+    }
+
+    // `UserService` sınıfını kullanarak API çağrısını yapın
+    String result = await UserService.addUser(
+      name: nameController.text.trim(),
+      surname: surnameController.text.trim(),
+      tckn: tckn,
+      vkn: vkn,
+      email: emailController.text.trim(),
+      password: '',
+    );
+
+    // Kullanıcıya sonucu göster
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(result)));
+
+    // Başarılıysa alanları temizle
+    if (result == "Kullanıcı başarıyla eklendi!") {
+      _clearFields();
+    }
+  }
+
+  void _clearFields() {
+    nameController.clear();
+    surnameController.clear();
+    tcknVknController.clear();
+    emailController.clear();
+  }
+
+
   Future<void> _sendActivationLink() async {
-    final vknTckn = _vknTcknController.text;
-    final email = _emailController.text;
+    final vknTckn = tcknVknController.text;
+    final email = emailController.text;
 
     if (!_isValidEmail(email)) {
       _showMessage("Lütfen geçerli bir e-posta adresi girin.", Colors.red);
@@ -47,7 +99,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   void _checkFields() {
     setState(() {
-      _isButtonEnabled = _vknTcknController.text.isNotEmpty && _emailController.text.isNotEmpty;
+      _isButtonEnabled = tcknVknController.text.isNotEmpty && emailController.text.isNotEmpty;
     });
   }
 
@@ -97,37 +149,66 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                             ),
                             const SizedBox(height: 20),
-                            const Text("Lütfen VKN/TCKN girin"),
                             TextField(
-                              controller: _vknTcknController,
+                              controller: nameController,
+                              decoration: const InputDecoration(
+                                labelText: "İsim",
+                                border: OutlineInputBorder(),
+                              ),
+                            ),
+                            const SizedBox(height: 16.0),
+                            TextField(
+                              controller: surnameController,
+                              decoration: const InputDecoration(
+                                labelText: "Soyisim",
+                                border: OutlineInputBorder(),
+                              ),
+                            ),
+                            const SizedBox(height: 16.0),
+                            TextField(
+                              controller: tcknVknController,
                               onChanged: (_) => _checkFields(),
                               keyboardType: TextInputType.number,
                               maxLength: 11,
                               decoration: const InputDecoration(
+                                labelText: "T.C. Kimlik No veya Vergi Kimlik No",
                                 border: OutlineInputBorder(),
-                                hintText: "Vergi Kimlik No veya T.C. Kimlik No",
                               ),
                             ),
                             const SizedBox(height: 16),
-                            const Text("Lütfen E-Posta Adresinizi Girin"),
                             TextField(
-                              controller: _emailController,
+                              controller: emailController,
                               onChanged: (_) => _checkFields(),
                               decoration: const InputDecoration(
+                                labelText: "E-Posta",
                                 border: OutlineInputBorder(),
-                                hintText: "E-posta",
                               ),
                             ),
                             const SizedBox(height: 24),
-                            ElevatedButton(
-                              onPressed: _isButtonEnabled ? _sendActivationLink : null,
-                              style: ElevatedButton.styleFrom(
-                                minimumSize: const Size(double.infinity, 48),
-                                backgroundColor: Colors.blue,
-                              ),
-                              child: const Text("Yeni Kullanıcı Oluştur"),
+                           ElevatedButton(
+                            onPressed: () async {
+                              if (nameController.text.isEmpty ||
+                                  surnameController.text.isEmpty ||
+                                  tcknVknController.text.isEmpty ||
+                                  emailController.text.isEmpty) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(content: Text("Lütfen tüm alanları doldurun!")),
+                                );
+                                return;
+                              }
+                              if (_isButtonEnabled) {
+                                await handleAddUser();
+                                // await sendEmail(email: emailController.text);
+                              } else {
+                                await _sendActivationLink();
+                              }
+                            },
+                            style: ElevatedButton.styleFrom(
+                              minimumSize: const Size(double.infinity, 48),
+                              backgroundColor: _isButtonEnabled ? Colors.blue : Colors.green, // Renk duruma göre değişir
                             ),
-                            // Mesaj alanı
+                            child: Text(_isButtonEnabled ? "Kullanıcı Ekle" : "Kayıt Ol"),
+                          ),
                             if (_message != null) ...[
                               const SizedBox(height: 20),
                               Container(

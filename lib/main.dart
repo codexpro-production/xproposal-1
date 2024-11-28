@@ -4,7 +4,6 @@ import 'screens/password_reset_screen.dart';
 import 'screens/password_setup_screen.dart';
 import 'screens/register_screen.dart';
 import 'screens/vendor_list_screen.dart';
-import 'screens/database_test_screen.dart';
 import 'screens/pdf_printer_screen.dart';
 
 void main() async {
@@ -21,15 +20,17 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: '/pdfPrinter',
+      initialRoute: '/',
+      // initialRoute: '/pdfPrinter',
       routes: {
         '/': (context) => LoginScreen(),
         '/passwordReset': (context) => PasswordResetScreen(),
         '/passwordSetup': (context) => PasswordSetupScreen(),
         '/register': (context) => RegisterScreen(),
         '/vendorList': (context) => VendorListScreen(),
+        // '/pdfViewer': (context) => PDFViewerScreen(),
+        // '/deneme': (context) => HomeScreen(),
         '/pdfPrinter': (context) => PDFPrinterScreen(),
-        '/databaseTest': (context) => DatabaseTestScreen(),
       },
     );
   }

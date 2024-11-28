@@ -1,48 +1,41 @@
-import '../services/api_service.dart';
-
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class UserService {
-  final ApiService apiService = ApiService();
+  static const String apiUrl = "http://localhost:3000/add-user";
 
-  // Create a document
-  Future<void> createDocument(Map<String, dynamic> document) async {
-    try {
-      await apiService.createDocument(document);
-      print('Document created successfully');
-    } catch (e) {
-      print('Error creating document: $e');
-    }
-  }
+  static Future<String> addUser({
+    required String name,
+    required String surname,
+    required String? tckn,
+    required String? vkn,
+    required String email,
+    required String password,
+  }) async {
+    var user = {
+      "type": "Vendor", // Statik bir değer
+      "name": name,
+      "surname": surname,
+      "tckn": tckn,
+      "vkn": vkn,
+      "email": email,
+      "password": password,
+    };
 
-  // Read all documents
-  Future<List<Map<String, dynamic>>> readDocuments() async {
     try {
-      final documents = await apiService.fetchDocuments();
-      print('${documents.length} documents retrieved successfully');
-      return documents;
-    } catch (e) {
-      print('Error reading documents: $e');
-      return [];
-    }
-  }
+      var response = await http.post(
+        Uri.parse(apiUrl),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(user),
+      );
 
-  // Update a document
-  Future<void> updateDocument(String id, Map<String, dynamic> updateData) async {
-    try {
-      await apiService.updateDocument(id, updateData);
-      print('Document updated successfully');
+      if (response.statusCode == 201) {
+        return "Kullanıcı başarıyla eklendi!";
+      } else {
+        return "Kullanıcı eklenemedi: ${response.body}";
+      }
     } catch (e) {
-      print('Error updating document: $e');
-    }
-  }
-
-  // Delete a document
-  Future<void> deleteDocument(String id) async {
-    try {
-      await apiService.deleteDocument(id);
-      print('Document deleted successfully');
-    } catch (e) {
-      print('Error deleting document: $e');
+      return "Hata oluştu: $e";
     }
   }
 }

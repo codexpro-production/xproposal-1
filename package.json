@@ -1,6 +1,32 @@
 {
   "dependencies": {
+<<<<<<< HEAD
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.3",
+    "cors": "^2.8.5",
+    "express": "^4.21.1",
+    "jsonwebtoken": "^9.0.2",
+    "mongodb": "^6.11.0",
+    "mongoose": "^8.8.3",
+    "nodemailer": "^6.9.16"
+  },
+  "name": "xproposal",
+  "version": "1.0.0",
+  "description": "<<<<<<< HEAD\r # xproposal-1\r =======\r # xproposal",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+=======
     "dotenv": "^16.4.5",
     "express": "^4.21.1"
   }
+>>>>>>> 602567e93840a3ef4ddac432c5c698026683813a
 }
