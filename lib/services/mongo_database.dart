@@ -6,7 +6,6 @@ class MongoDatabase {
 
   static Future<void> connect() async {
     try {
-      //db = await Db.create("mongodb+srv://codexpro:l1o5d4weBG6977lm@cluster0.ts0d7.mongodb.net/Cluster0?retryWrites=true&w=majority");
       db = await Db.create("mongodb+srv://codexpro:l1o5d4weBG6977lm@cluster0.ts0d7.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0");
       await db!.open();
       usersCollection = db!.collection("users");

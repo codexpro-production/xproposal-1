@@ -1,11 +1,9 @@
-<<<<<<< HEAD
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class UserService {
   static const String apiUrl = "http://localhost:3000/add-user";
 
-  // Kullanıcı ekleme fonksiyonu
   static Future<String> addUser({
     required String name,
     required String surname,
@@ -14,7 +12,6 @@ class UserService {
     required String email,
     required String password,
   }) async {
-    // Kullanıcı verilerini hazırlayın
     var user = {
       "type": "Vendor", // Statik bir değer
       "name": name,
