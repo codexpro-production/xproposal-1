@@ -1,5 +1,6 @@
 {
   "dependencies": {
+<<<<<<< HEAD
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.3",
     "cors": "^2.8.5",
@@ -23,4 +24,9 @@
   "keywords": [],
   "author": "",
   "license": "ISC"
+=======
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1"
+  }
+>>>>>>> 602567e93840a3ef4ddac432c5c698026683813a
 }
