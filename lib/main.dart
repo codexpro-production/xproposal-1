@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: '/',
+      initialRoute: '/register',
       // initialRoute: '/pdfPrinter',
       routes: {
         '/': (context) => LoginScreen(),
@@ -28,7 +28,6 @@ class MyApp extends StatelessWidget {
         '/passwordSetup': (context) => PasswordSetupScreen(),
         '/register': (context) => RegisterScreen(),
         '/vendorList': (context) => VendorListScreen(),
-        // '/pdfViewer': (context) => PDFViewerScreen(),
         // '/deneme': (context) => HomeScreen(),
         '/pdfPrinter': (context) => PDFPrinterScreen(),
       },
