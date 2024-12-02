@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../services/mail_service.dart';  // Import the mail_service.dart file
+import '../services/mail_service.dart';
 
 class PasswordResetScreen extends StatefulWidget {
   const PasswordResetScreen({super.key});

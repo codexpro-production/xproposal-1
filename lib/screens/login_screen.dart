@@ -1,6 +1,7 @@
 import 'dart:html' as html;
 import 'package:flutter/material.dart';
 import '../widgets/captcha_widget.dart';
+import '../services/user_service.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -38,7 +39,6 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       body: LayoutBuilder(
         builder: (context, constraints) {
-          // Görüntüleme boyutlarını ayarlama
           double imageWidth = constraints.maxWidth > 800
               ? MediaQuery.of(context).size.width * 0.5
               : MediaQuery.of(context).size.width * 0.4;
@@ -153,6 +153,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   _captchaFeedback = isValid
                                       ? "CAPTCHA doğru!"
                                       : "Lütfen tekrar deneyin.";
+                                      _captchaToken = isValid ? "valid-captcha-token" : null;
                                 });
                               },
                             ),
@@ -172,7 +173,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             const SizedBox(height: 24),
 
                             ElevatedButton(
-                              onPressed: _login,
+                              onPressed: isCaptchaValid() ? _login : null,
                               style: ElevatedButton.styleFrom(
                                 minimumSize: const Size(double.infinity, 48),
                               ),
@@ -202,31 +203,47 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Future<void> _login() async {
-    final tcVkn = _tcVknController.text;
-    final password = _passwordController.text;
+bool isCaptchaValid() {
+  return _captchaToken != null &&
+         _captchaToken!.isNotEmpty &&
+         _captchaFeedback.contains("doğru");
+}
 
-    if (tcVkn.isEmpty || !isValidTcOrVkn(tcVkn)) {
-      setState(() {
-        _tcVknFeedback = "TC Kimlik Numarası veya VKN eksik";
-      });
-      return;
-    }
+Future<void> _login() async {
+  final tcVkn = _tcVknController.text;
+  final password = _passwordController.text;
 
-    try {
-      const user = true;
-
-      if (user) {
-        Navigator.pushReplacementNamed(context, '/');
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Kullanıcı adı veya şifre hatalı.")),
-        );
-      }
-    } catch (error) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Giriş hatası: $error")),
-      );
-    }
+  if (tcVkn.isEmpty || !isValidTcOrVkn(tcVkn)) {
+    setState(() {
+      _tcVknFeedback = "Geçerli TC Kimlik Numarası veya VKN giriniz";
+    });
+    return;
   }
+  if (!isCaptchaValid()) {
+    setState(() {
+      _captchaFeedback = "Lütfen CAPTCHA doğrulamasını tamamlayın.";
+    });
+    return;
+  }
+
+  try {
+  final message = await UserService.login(tcVkn: tcVkn, password: password);
+  print('Login yanıtı: $message'); 
+
+  if (message == "success") {
+    Navigator.pushReplacementNamed(context, '/xproposal'); 
+  } else {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message)),
+    );
+  }
+} catch (error) {
+  print('Hata: $error');
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(content: Text("Giriş hatası: $error")),
+  );
+}
+}
+
+
 }

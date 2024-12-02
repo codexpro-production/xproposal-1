@@ -5,7 +5,8 @@ import 'screens/password_setup_screen.dart';
 import 'screens/register_screen.dart';
 import 'screens/vendor_list_screen.dart';
 import 'screens/pdf_printer_screen.dart';
-
+import 'screens/xproposal_screen.dart';
+import 'screens/responsible_screen.dart';
 void main() async {
   runApp(const MyApp());
 }
@@ -16,20 +17,32 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'SAP User Login',
+      title: 'XPROPOSAL',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: '/register',
-      // initialRoute: '/pdfPrinter',
+      initialRoute: '/',
       routes: {
         '/': (context) => LoginScreen(),
         '/passwordReset': (context) => PasswordResetScreen(),
-        '/passwordSetup': (context) => PasswordSetupScreen(),
         '/register': (context) => RegisterScreen(),
         '/vendorList': (context) => VendorListScreen(),
-        // '/deneme': (context) => HomeScreen(),
+        '/xproposal': (context) => XProposalScreen(),
         '/pdfPrinter': (context) => PDFPrinterScreen(),
+        '/responsible': (context) => ResponsibleScreen(),
+        //'/setup-password': (context) => PasswordSetupScreen(token: ''),
+      },
+      onGenerateRoute: (settings) {
+        if (settings.name?.startsWith('/setup-password') == true) {
+          final uri = Uri.parse(settings.name!);
+          final token = uri.queryParameters['token'];
+          if (token != null) {
+            return MaterialPageRoute(
+              builder: (_) => PasswordSetupScreen(token: token),
+            );
+          }
+        }
+        return null; //404
       },
     );
   }

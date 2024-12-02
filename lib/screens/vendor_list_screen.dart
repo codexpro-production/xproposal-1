@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../models/vendor.dart';
-// import '../services/sap_service.dart';
 
 class VendorListScreen extends StatefulWidget {
   const VendorListScreen({super.key});
@@ -13,14 +12,14 @@ class VendorListScreen extends StatefulWidget {
 
 class _VendorListScreenState extends State<VendorListScreen> {
   late Future<List<Vendor>> _vendors;
-  List<Vendor> _allVendors = []; // Tüm vendor'ları tutar
-  List<Vendor> _filteredVendors = []; // Filtrelenmiş vendor listesi
-  bool _isSearching = false; // Arama modunda olup olmadığımızı takip eder
+  List<Vendor> _allVendors = []; 
+  List<Vendor> _filteredVendors = []; 
+  bool _isSearching = false; 
   final TextEditingController _searchController = TextEditingController();
 
   Future<List<Vendor>> fetchVendors() async {
     try {
-      final String response = await rootBundle.loadString('assets/vendorList.json');
+      final String response = await rootBundle.loadString('assets/JSONs/vendorList.json');
       final List<dynamic> data = jsonDecode(response);
       return data.map((json) => Vendor.fromJson(json)).toList();
     } catch (e) {
@@ -34,14 +33,13 @@ class _VendorListScreenState extends State<VendorListScreen> {
     _vendors = fetchVendors();
     _vendors.then((value) {
       setState(() {
-        _allVendors = value; // Tüm vendor'ları kaydediyoruz
-        _filteredVendors = _allVendors; // Başlangıçta tüm vendor'ları gösteriyoruz
+        _allVendors = value; 
+        _filteredVendors = _allVendors;
       });
     });
     _searchController.addListener(_onSearchChanged);
   }
 
-  // Arama sorgusu değiştiğinde çağrılan fonksiyon
   void _onSearchChanged() {
     setState(() {
       final query = _searchController.text.toLowerCase();
@@ -52,12 +50,11 @@ class _VendorListScreenState extends State<VendorListScreen> {
     });
   }
 
-  // Arama modunu kapatır ve arama sonuçlarını sıfırlar
   void _clearSearch() {
     setState(() {
       _isSearching = false;
       _searchController.clear();
-      _filteredVendors = _allVendors; // Tüm vendor'ları geri yükler
+      _filteredVendors = _allVendors;
     });
   }
 
@@ -108,12 +105,12 @@ class _VendorListScreenState extends State<VendorListScreen> {
               itemCount: _filteredVendors.length,
               itemBuilder: (context, index) {
                 final vendor = _filteredVendors[index];
-                final originalIndex = _allVendors.indexOf(vendor); // Orijinal listede vendor'un indeksini bulur
+                final originalIndex = _allVendors.indexOf(vendor); 
                 return Card(
                   margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                   child: ListTile(
                     leading: CircleAvatar(
-                      child: Text((originalIndex + 1).toString()), // Orijinal sıra numarası korunur
+                      child: Text((originalIndex + 1).toString()),
                     ),
                     title: Text(vendor.name1),
                     subtitle: Column(

@@ -30,5 +30,10 @@ public final class GeneratedPluginRegistrant {
     } catch (Exception e) {
       Log.e(TAG, "Error registering plugin printing, net.nfet.flutter.printing.PrintingPlugin", e);
     }
+    try {
+      flutterEngine.getPlugins().add(new name.avioli.unilinks.UniLinksPlugin());
+    } catch (Exception e) {
+      Log.e(TAG, "Error registering plugin uni_links, name.avioli.unilinks.UniLinksPlugin", e);
+    }
   }
 }

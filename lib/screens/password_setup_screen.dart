@@ -1,10 +1,14 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
+import 'package:uni_links/uni_links.dart';
 
 class PasswordSetupScreen extends StatefulWidget {
-  const PasswordSetupScreen({super.key});
+  String? token;
+
+  PasswordSetupScreen({super.key, required this.token});
 
   @override
   _PasswordSetupScreenState createState() => _PasswordSetupScreenState();
@@ -26,6 +30,7 @@ class _PasswordSetupScreenState extends State<PasswordSetupScreen> {
   void initState() {
     super.initState();
     _newPasswordController.addListener(_validatePassword);
+    _initDeepLinkListener();
   }
 
   @override
@@ -63,6 +68,73 @@ class _PasswordSetupScreenState extends State<PasswordSetupScreen> {
         });
       }
     });
+  }
+
+  Future<void> _setPassword() async {
+  final newPassword = _newPasswordController.text;
+  final confirmPassword = _confirmPasswordController.text;
+
+  if (newPassword.isEmpty || confirmPassword.isEmpty) {
+    setState(() => _errorMessage = "Lütfen tüm alanları doldurun.");
+    return;
+  } 
+  else if (newPassword != confirmPassword) {
+    setState(() => _errorMessage = "Şifreler uyuşmuyor.");
+    return;
+  }
+  else if (!(_isLengthValid && _hasUppercase && _hasLowercase && _hasDigit && _hasSpecialChar)) {
+    setState(() => _errorMessage = "Şifre gereksinimlerini karşılamıyor.");
+    return;
+  }
+
+  print("Sending request with token: ${widget.token}");
+  print("New Password: $newPassword");
+
+
+  // final token = widget.token;
+  // if (token == null || token.isEmpty) {
+  //   setState(() => _errorMessage = "Geçersiz token.");
+  //   return;
+  // }
+
+  try {
+    final response = await http.post(
+      Uri.parse("http://localhost:3000/api/setup-password"),
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode({
+        "token": widget.token,
+        "password": newPassword,
+      }),
+    );
+
+    print("Response status code: ${response.statusCode}"); 
+    print("Response body: ${response.body}"); 
+
+    if (response.statusCode == 200) {
+      Navigator.pushReplacementNamed(context, '/');
+    } else {
+      final error = jsonDecode(response.body)['message'];
+      setState(() => _errorMessage = error ?? "Şifre ayarlanırken bir hata oluştu.");
+    }
+  } catch (e) {
+    setState(() => _errorMessage = "Bir hata oluştu: $e");
+  }
+}
+
+ void _initDeepLinkListener() async {
+  final initialUri = await getInitialUri();
+  print("Initial URI: $initialUri"); 
+
+  if (initialUri != null) {
+    final token = initialUri.queryParameters['token'];
+    print("Extracted Token: $token"); 
+
+    if (token != null) {
+      setState(() {
+        widget.token = token;
+      });
+      }
+    }
   }
 
   @override
@@ -103,7 +175,7 @@ class _PasswordSetupScreenState extends State<PasswordSetupScreen> {
 
               // Şifre Kaydet butonu
               ElevatedButton(
-                onPressed: _setupPassword,
+                onPressed: _setPassword,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.purpleAccent,
                   foregroundColor: Colors.white,       
@@ -175,36 +247,5 @@ class _PasswordSetupScreenState extends State<PasswordSetupScreen> {
     final bytes = utf8.encode(password);
     final hashed = sha256.convert(bytes);
     return hashed.toString();
-  }
-
-  void _setupPassword() {
-    final newPassword = _newPasswordController.text;
-    final confirmPassword = _confirmPasswordController.text;
-
-    if (newPassword.isEmpty) {
-      setState(() => _errorMessage = "Yeni şifreyi girin");
-      return;
-    }
-    if (confirmPassword.isEmpty) {
-      setState(() => _errorMessage = "Şifre tekrarını yapınız");
-      return;
-    }
-
-    if (!(_isLengthValid && _hasUppercase && _hasLowercase && _hasDigit && _hasSpecialChar)) {
-      setState(() => _errorMessage = "Lütfen tüm şifre gereksinimlerini sağlayın!");
-      return;
-    }
-
-    if (newPassword != confirmPassword) {
-      setState(() => _errorMessage = "Şifreler uyuşmuyor");
-      return;
-    }
-
-    final hashedPassword = hashPassword(newPassword);
-
-    print("Yeni Şifre (Hashlenmiş): $hashedPassword");
-
-    print("Şifre başarıyla kaydedildi!");
-    Navigator.pushReplacementNamed(context, '/');
   }
 }
