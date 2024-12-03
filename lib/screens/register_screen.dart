@@ -69,7 +69,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   String? validatePhoneNumber(String value) {
     if (value.isEmpty) return "Telefon numarası boş olamaz.";
-    if (!RegExp(r'^0\d{11}$').hasMatch(value)) {
+    if (!RegExp(r'^0\d{10}$').hasMatch(value)) {
       return "Telefon numarası 0 ile başlamalı ve 12 haneli olmalıdır.";
     }
     return null;
@@ -77,7 +77,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   String? validateFaxNumber(String value) {
     if (value.isEmpty) return "Faks numarası boş olamaz.";
-    if (!RegExp(r'^0\d{11}$').hasMatch(value)) {
+    if (!RegExp(r'^0\d{10}$').hasMatch(value)) {
       return "Faks numarası 0 ile başlamalı ve 12 haneli olmalıdır.";
     }
     return null;
@@ -91,7 +91,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return null;
   }
 
-    // Check all fields and update error messages
   void _checkFields() {
     setState(() {
       _errorMessages.clear();
@@ -143,13 +142,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
     } else if(userType == "Responsible"){
       result = await UserService.addUser(
+        userType: userType,
         name: nameController.text.trim(),
         surname: surnameController.text.trim(),
         tckn: tckn,
         vkn: vkn,
         email: email, 
         password: '', 
-        userType: userType,
         purchaseGroup: purchaseGroupController.text.trim(),
         telNumber: int.tryParse(telNumberController.text.trim()),
         faxNumber: int.tryParse(faxNumberController.text.trim()),

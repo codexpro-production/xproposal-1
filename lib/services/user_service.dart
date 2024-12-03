@@ -6,22 +6,24 @@ class UserService {
 
   // Add User
   static Future<String> addUser({
+    required String userType,
     required String name,
     required String surname,
     String? tckn,
     String? vkn,
     required String email,
     required String password,
-    required String userType,  // "Vendor" or "Responsible"
     String? purchaseGroup,     // Only for Responsible
     int? telNumber,            // Only for Responsible
     int? faxNumber,            // Only for Responsible
     int? responsible,          // Only for Responsible
   }) async {
     var user = {
-      "type": userType,  // Include the type field
+      "type": userType,
       "name": name,
       "surname": surname,
+      "tckn": tckn,
+      "vkn": vkn,
       "email": email,
       "password": password,
     };

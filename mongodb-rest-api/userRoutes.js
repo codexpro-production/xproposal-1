@@ -43,6 +43,7 @@ router.post("/add-user", async (req, res) => {
         message: `${type} successfully added! Activation link has been sent.`,
         activationTokenLink,
       });
+      
     } else if (type === "Responsible") {
       model = UserResponsible;
       const user = new model({
