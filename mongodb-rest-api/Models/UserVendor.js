@@ -6,7 +6,7 @@ const userVendorSchema = new mongoose.Schema({
   surname: { type: String, required: true },
   tckn: { type: Number },
   vkn: { type: Number },
-  email: { type: String },
+  email: { type: String, unique: true, required: true },
   password: { type: String },
   activationToken: { type: String },
   isActive: {type: Boolean, default: false},

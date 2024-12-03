@@ -6,7 +6,7 @@ const userResponsibleSchema = new mongoose.Schema({
   surname: { type: String, required: true },
   tckn: { type: Number },
   vkn: { type: Number },
-  email: { type: String },
+  email: { type: String, unique: true, require: true},
   password: { type: String },
 
   purchaseGroup: { type: String, required: true },

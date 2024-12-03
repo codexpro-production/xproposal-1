@@ -19,61 +19,113 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController responsibleController = TextEditingController();
 
   bool _isButtonEnabled = false;
-  String userType = 'Vendor'; // Default user type is Vendor
+  String userType = '';
   String? _message;
+  List<String> _errorMessages = [];
   Color _messageColor = Colors.green;
 
-void _checkFields() {
-  setState(() {
-    if (userType == "Vendor") {
-      _isButtonEnabled = nameController.text.isNotEmpty &&
-          surnameController.text.isNotEmpty &&
-          tcknVknController.text.isNotEmpty &&
-          emailController.text.isNotEmpty;
-    } else if (userType == "Responsible") {
-      _isButtonEnabled = nameController.text.isNotEmpty &&
-          surnameController.text.isNotEmpty &&
-          tcknVknController.text.isNotEmpty &&
-          emailController.text.isNotEmpty &&
-          purchaseGroupController.text.isNotEmpty &&
-          telNumberController.text.isNotEmpty &&
-          faxNumberController.text.isNotEmpty &&
-          responsibleController.text.isNotEmpty &&
-          int.tryParse(telNumberController.text) != null &&
-          int.tryParse(faxNumberController.text) != null &&
-          int.tryParse(responsibleController.text) != null; // Kontrollere int dönüşüm ekleniyor
-    } else {
-      _isButtonEnabled = false;
-    }
-        debugPrint("Name: ${nameController.text}");
-    debugPrint("Surname: ${surnameController.text}");
-    debugPrint("TCKN/VKN: ${tcknVknController.text}");
-    debugPrint("Email: ${emailController.text}");
-    debugPrint("Purchase Group: ${purchaseGroupController.text}");
-    debugPrint("Tel Number: ${telNumberController.text}");
-    debugPrint("Fax Number: ${faxNumberController.text}");
-    debugPrint("Responsible: ${responsibleController.text}");
-    debugPrint("Tel Valid: ${int.tryParse(telNumberController.text) != null}");
-    debugPrint("Fax Valid: ${int.tryParse(faxNumberController.text) != null}");
-    debugPrint("Responsible Valid: ${int.tryParse(responsibleController.text) != null}");
-  });
-}
 
-    Future<void> handleAddUser() async {
-    String? tckn;
-    String? vkn;
+   // Validation methods
+  String? validateName(String value) {
+    if (value.isEmpty) return "İsim alanı boş olamaz.";
+    if (!RegExp(r'^[a-zA-ZğüşıöçĞÜŞİÖÇ\s]+$').hasMatch(value)) {
+      return "İsim sadece harflerden oluşmalıdır.";
+    }
+    return null;
+  }
+
+  String? validateSurname(String value) {
+    if (value.isEmpty) return "Soyisim alanı boş olamaz.";
+    if (!RegExp(r'^[a-zA-ZğüşıöçĞÜŞİÖÇ\s]+$').hasMatch(value)) {
+      return "Soyisim sadece harflerden oluşmalıdır.";
+    }
+    return null;
+  }
+
+  String? validateTcknVkn(String value) {
+    if (value.isEmpty) return "TCKN veya VKN alanı boş olamaz.";
+    if (!(value.length == 10 || value.length == 11)) {
+      return "TCKN 11, VKN 10 haneli olmalıdır.";
+    }
+    if (!RegExp(r'^\d+$').hasMatch(value)) {
+      return "TCKN veya VKN sadece rakamlardan oluşmalıdır.";
+    }
+    return null;
+  }
+
+  String? validateEmail(String value) {
+    if (value.isEmpty) return "E-posta alanı boş olamaz.";
+    final emailRegExp = RegExp(r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$');
+    if (!emailRegExp.hasMatch(value)) {
+      return "Geçerli bir e-posta adresi girin.";
+    }
+    return null;
+  }
+
+  String? validatePurchaseGroup(String value) {
+    if (value.isEmpty) return "Satın alma grubu boş olamaz.";
+    return null;
+  }
+
+  String? validatePhoneNumber(String value) {
+    if (value.isEmpty) return "Telefon numarası boş olamaz.";
+    if (!RegExp(r'^0\d{11}$').hasMatch(value)) {
+      return "Telefon numarası 0 ile başlamalı ve 12 haneli olmalıdır.";
+    }
+    return null;
+  }
+
+  String? validateFaxNumber(String value) {
+    if (value.isEmpty) return "Faks numarası boş olamaz.";
+    if (!RegExp(r'^0\d{11}$').hasMatch(value)) {
+      return "Faks numarası 0 ile başlamalı ve 12 haneli olmalıdır.";
+    }
+    return null;
+  }
+
+  String? validateResponsible(String value) {
+    if (value.isEmpty) return "Sorumlu alanı boş olamaz.";
+    if (!RegExp(r'^\d+$').hasMatch(value)) {
+      return "Sorumlu sadece rakamlardan oluşmalıdır.";
+    }
+    return null;
+  }
+
+    // Check all fields and update error messages
+  void _checkFields() {
+    setState(() {
+      _errorMessages.clear();
+
+      final validations = [
+        validateName(nameController.text),
+        validateSurname(surnameController.text),
+        validateTcknVkn(tcknVknController.text),
+        validateEmail(emailController.text),
+      ];
+
+      if (userType == "Responsible") {
+        validations.addAll([
+          validatePurchaseGroup(purchaseGroupController.text),
+          validatePhoneNumber(telNumberController.text),
+          validateFaxNumber(faxNumberController.text),
+          validateResponsible(responsibleController.text),
+        ]);
+      }
+
+      _errorMessages = validations.where((error) => error != null).cast<String>().toList();
+      _isButtonEnabled = _errorMessages.isEmpty;
+    });
+  }
+
+  Future<void> handleAddUser() async {
     final tcknVknValue = tcknVknController.text.trim();
+    String? tckn = tcknVknValue.length == 11 ? tcknVknValue : null;
+    String? vkn = tcknVknValue.length == 10 ? tcknVknValue : null;
     final email = emailController.text.trim();
 
-    if (tcknVknValue.length == 11) {
-      tckn = tcknVknValue;
-      vkn = null;
-    } else if (tcknVknValue.length == 10) {
-      vkn = tcknVknValue;
-      tckn = null;
-    } else {
+    if (tckn == null && vkn == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Lütfen geçerli bir TCKN veya VKN girin!")),
+        const SnackBar(content: Text("Geçerli bir TCKN veya VKN girin!")),
       );
       return;
     }
@@ -92,7 +144,9 @@ void _checkFields() {
     } else if(userType == "Responsible"){
       result = await UserService.addUser(
         name: nameController.text.trim(),
-        surname: surnameController.text.trim(), 
+        surname: surnameController.text.trim(),
+        tckn: tckn,
+        vkn: vkn,
         email: email, 
         password: '', 
         userType: userType,
@@ -116,8 +170,11 @@ void _checkFields() {
     surnameController.clear();
     tcknVknController.clear();
     emailController.clear();
+    purchaseGroupController.clear();
+    telNumberController.clear();
+    faxNumberController.clear();
+    responsibleController.clear();
   }
-
 
   Future<void> sendActivationLink() async {
   final vknTckn = tcknVknController.text;
@@ -325,7 +382,7 @@ void _checkFields() {
                                       await sendActivationLink();
                                     } else {
                                       ScaffoldMessenger.of(context).showSnackBar(
-                                        const SnackBar(content: Text("Lütfen tüm alanları doldurun!")),
+                                        const SnackBar(content: Text("Lütfen tüm alanları doğru doldurun!")),
                                       );
                                     }
                                   },

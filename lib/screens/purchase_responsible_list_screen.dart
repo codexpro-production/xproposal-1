@@ -1,27 +1,28 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../models/vendor.dart';
+import '../models/purchase_responsible.dart';
 
-class VendorListScreen extends StatefulWidget {
-  const VendorListScreen({super.key});
+class PurchaseResponsibleScreen extends StatefulWidget {
+  const PurchaseResponsibleScreen({super.key});
 
   @override
-  State<VendorListScreen> createState() => _VendorListScreenState();
+  State<PurchaseResponsibleScreen> createState() => _PurchaseResponsibleScreenState();
 }
 
-class _VendorListScreenState extends State<VendorListScreen> {
-  late Future<List<Vendor>> _vendors;
-  List<Vendor> _allVendors = []; 
-  List<Vendor> _filteredVendors = []; 
-  bool _isSearching = false; 
+class _PurchaseResponsibleScreenState extends State<PurchaseResponsibleScreen> {
+  late Future<List<PurchaseResponsible>> _responsibles;
+  List<PurchaseResponsible> _allResponsibles = [];
+  List<PurchaseResponsible> _filteredResponsibles = [];
+  bool _isSearching = false;
   final TextEditingController _searchController = TextEditingController();
 
-  Future<List<Vendor>> fetchVendors() async {
+  Future<List<PurchaseResponsible>> fetchResponsibles() async {
     try {
-      final String response = await rootBundle.loadString('../assets/JSONs/vendorList.json');
+      final String response =
+          await rootBundle.loadString('../assets/JSONs/PURCHASE_RESPONSIBLE_LIST.json');
       final List<dynamic> data = jsonDecode(response);
-      return data.map((json) => Vendor.fromJson(json)).toList();
+      return data.map((json) => PurchaseResponsible.fromJson(json)).toList();
     } catch (e) {
       throw Exception("Error loading or parsing JSON data: $e");
     }
@@ -30,11 +31,11 @@ class _VendorListScreenState extends State<VendorListScreen> {
   @override
   void initState() {
     super.initState();
-    _vendors = fetchVendors();
-    _vendors.then((value) {
+    _responsibles = fetchResponsibles();
+    _responsibles.then((value) {
       setState(() {
-        _allVendors = value; 
-        _filteredVendors = _allVendors;
+        _allResponsibles = value;
+        _filteredResponsibles = _allResponsibles;
       });
     });
     _searchController.addListener(_onSearchChanged);
@@ -43,9 +44,10 @@ class _VendorListScreenState extends State<VendorListScreen> {
   void _onSearchChanged() {
     setState(() {
       final query = _searchController.text.toLowerCase();
-      _filteredVendors = _allVendors.where((vendor) {
-        return vendor.name1.toLowerCase().contains(query) ||
-               vendor.lifnr.toLowerCase().contains(query);
+      _filteredResponsibles = _allResponsibles.where((responsible) {
+        return responsible.purchaseGroup.toLowerCase().contains(query) ||
+            responsible.purchaseGroupText.toLowerCase().contains(query) ||
+            responsible.responsible.toString().contains(query);
       }).toList();
     });
   }
@@ -54,7 +56,7 @@ class _VendorListScreenState extends State<VendorListScreen> {
     setState(() {
       _isSearching = false;
       _searchController.clear();
-      _filteredVendors = _allVendors;
+      _filteredResponsibles = _allResponsibles;
     });
   }
 
@@ -64,11 +66,11 @@ class _VendorListScreenState extends State<VendorListScreen> {
       appBar: AppBar(
         automaticallyImplyLeading: false, // Geri alma butonunu kaldırır
         title: !_isSearching
-            ? null // "Vendor List" başlığını kaldırır
+            ? null // "Purchase Responsible List" başlığını kaldırır
             : TextField(
                 controller: _searchController,
                 decoration: const InputDecoration(
-                  hintText: "Search by Name or Number",
+                  hintText: "Search by Group or Responsible",
                   border: InputBorder.none,
                   hintStyle: TextStyle(color: Colors.black),
                 ),
@@ -91,46 +93,42 @@ class _VendorListScreenState extends State<VendorListScreen> {
                 ),
         ],
       ),
-      body: FutureBuilder<List<Vendor>>(
-        future: _vendors,
+      body: FutureBuilder<List<PurchaseResponsible>>(
+        future: _responsibles,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Center(child: Text("Error: ${snapshot.error}"));
           } else if (snapshot.hasData) {
-            if (_filteredVendors.isEmpty) {
-              return const Center(child: Text("No vendors found."));
+            if (_filteredResponsibles.isEmpty) {
+              return const Center(child: Text("No purchase responsibles found."));
             }
             return ListView.builder(
-              itemCount: _filteredVendors.length,
+              itemCount: _filteredResponsibles.length,
               itemBuilder: (context, index) {
-                final vendor = _filteredVendors[index];
-                final originalIndex = _allVendors.indexOf(vendor); 
+                final responsible = _filteredResponsibles[index];
+                final originalIndex = _allResponsibles.indexOf(responsible);
                 return Card(
                   margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                   child: ListTile(
                     leading: CircleAvatar(
                       child: Text((originalIndex + 1).toString()),
                     ),
-                    title: Text(vendor.name1),
+                    title: Text(responsible.purchaseGroup),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("Vendor No: ${vendor.lifnr}"),
-                        if (vendor.email.isNotEmpty)
-                          Text("Email: ${vendor.email}"),
+                        Text("Group Text: ${responsible.purchaseGroupText}"),
+                        Text("Responsible: ${responsible.responsible}"),
                       ],
                     ),
-                    trailing: vendor.email.isNotEmpty
-                        ? Icon(Icons.email, color: Colors.blue)
-                        : null,
                   ),
                 );
               },
             );
           } else {
-            return const Center(child: Text("No vendors found."));
+            return const Center(child: Text("No purchase responsibles found."));
           }
         },
       ),

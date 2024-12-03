@@ -15,6 +15,11 @@ router.post("/add-user", async (req, res) => {
       faxNumber,
       responsible, } = req.body;
 
+    const existingUser = await UserVendor.findOne({ email }) || await UserResponsible.findOne({ email });
+      if (existingUser) {
+        return res.status(409).send({ success: false, message: "Bu kullanıcı zaten kayıtlı!" });
+      }
+  
     const activationToken = jwt.sign({ email }, 'secret-key', { expiresIn: '1h' });
 
     if (type === "Vendor") {
@@ -30,7 +35,7 @@ router.post("/add-user", async (req, res) => {
       });
       await user.save();
 
-      const activationTokenLink = `http://localhost57597/setup-password#/setup-password?token=${activationToken}`;
+      const activationTokenLink = `http://localhost:54334/setup-password#/setup-password?token=${activationToken}`;
       await sendEmail({ email, activationTokenLink });
 
       res.status(201).send({
@@ -56,7 +61,7 @@ router.post("/add-user", async (req, res) => {
       });
       await user.save();
 
-      const activationTokenLink = `http://localhost:57597/setup-password#/setup-password?token=${activationToken}`;
+      const activationTokenLink = `http://localhost:54334/setup-password#/setup-password?token=${activationToken}`;
       await sendEmail({ email, activationTokenLink });
 
       res.status(201).send({

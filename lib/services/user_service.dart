@@ -27,7 +27,6 @@ class UserService {
     };
 
     if (userType == "Vendor") {
-      // Vendor-specific fields
       if (tckn != null) {
         user["tckn"] = tckn.toString(); // Convert to String if not null
       }
@@ -58,12 +57,13 @@ class UserService {
         headers: {"Content-Type": "application/json"},
         body: jsonEncode(user),
       );
-
-      if (response.statusCode == 201) {
-        return "Kullanıcı başarıyla eklendi!";
-      } else {
-        return "Kullanıcı eklenemedi: ${response.body}";
-      }
+    if (response.statusCode == 201) {
+      return "Kullanıcı başarıyla eklendi!";
+    } else if (response.statusCode == 409) {
+      return "Bu kullanıcı zaten kayıtlı!";
+    } else {
+      return "Kullanıcı eklenemedi: ${response.body}";
+    }
     } catch (e) {
       return "Hata oluştu: $e";
     }
