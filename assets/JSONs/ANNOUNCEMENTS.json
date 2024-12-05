@@ -1,0 +1,326 @@
+[
+    {
+      "purchaseRequsitionNumber": "0010000000",
+      "description": " Purchase Announcement 1 ",
+      "rfqDate": " 22.11.2024  ",
+      "rfqTime": " 10:00:00  ",
+      "items": [
+        {
+          "itemNo": 10,
+          "materialNumber": "TG10",
+          "materialDescription": "Hand.goed. 10, PD, derde",
+          "quantity": 30,
+          "unitOfMeasure": "ADT",
+          "deliveryLocation": "Plant 1 US",
+          "deliveryDate": " 06.10.2017  "
+        }
+      ]
+    },
+    {
+      "purchaseRequsitionNumber": "0010000010",
+      "description": " Purchase Announcement 2 ",
+      "rfqDate": " 22.11.2024  ",
+      "rfqTime": " 10:00:00  ",
+      "items": [
+        {
+          "itemNo": 10,
+          "materialNumber": "",
+          "materialDescription": "Office supply",
+          "quantity": 600,
+          "unitOfMeasure": "HB",
+          "deliveryLocation": "Plant 1 US",
+          "deliveryDate": " 09.11.2017  "
+        }
+      ]
+    },
+    {
+      "purchaseRequsitionNumber": "0010000011",
+      "description": " Purchase Announcement 3 ",
+      "rfqDate": " 22.11.2024  ",
+      "rfqTime": " 10:00:00  ",
+      "items": [
+        {
+          "itemNo": 10,
+          "materialNumber": "",
+          "materialDescription": "Office",
+          "quantity": 100,
+          "unitOfMeasure": "HB",
+          "deliveryLocation": "Plant 1 US",
+          "deliveryDate": " 09.10.2017  "
+        }
+      ]
+    },
+    {
+      "purchaseRequsitionNumber": "0010000020",
+      "description": " Purchase Announcement 4 ",
+      "rfqDate": " 22.11.2024  ",
+      "rfqTime": " 10:00:00  ",
+      "items": [
+        {
+          "itemNo": 10,
+          "materialNumber": "",
+          "materialDescription": "Requisition 1",
+          "quantity": 1,
+          "unitOfMeasure": "ADT",
+          "deliveryLocation": "Plant 1 US",
+          "deliveryDate": " 19.10.2017  "
+        }
+      ]
+    },
+    {
+      "purchaseRequsitionNumber": "0010000021",
+      "description": " Purchase Announcement 5 ",
+      "rfqDate": " 22.11.2024  ",
+      "rfqTime": " 10:00:00  ",
+      "items": [
+        {
+          "itemNo": 10,
+          "materialNumber": "TG10",
+          "materialDescription": "Hand.goed. 10, PD, derde",
+          "quantity": 3,
+          "unitOfMeasure": "ADT",
+          "deliveryLocation": "Plant 1 US",
+          "deliveryDate": " 16.10.2017  "
+        }
+      ]
+    },
+    {
+      "purchaseRequsitionNumber": "0010000022",
+      "description": " Purchase Announcement 6 ",
+      "rfqDate": " 22.11.2024  ",
+      "rfqTime": " 10:00:00  ",
+      "items": [
+        {
+          "itemNo": 10,
+          "materialNumber": "TG10",
+          "materialDescription": "Hand.goed. 10, PD, derde",
+          "quantity": 4,
+          "unitOfMeasure": "ADT",
+          "deliveryLocation": "Plant 1 US",
+          "deliveryDate": " 16.10.2017  "
+        },
+        {
+          "itemNo": 20,
+          "materialNumber": "TG10",
+          "materialDescription": "Hand.goed. 10, PD, derde",
+          "quantity": 1,
+          "unitOfMeasure": "ADT",
+          "deliveryLocation": "Plant 1 US",
+          "deliveryDate": " 16.10.2017  "
+        }
+      ]
+    },
+    {
+      "purchaseRequsitionNumber": "0010000023",
+      "description": " Purchase Announcement 7 ",
+      "rfqDate": " 22.11.2024  ",
+      "rfqTime": " 10:00:00  ",
+      "items": [
+        {
+          "itemNo": 10,
+          "materialNumber": "TG13",
+          "materialDescription": "Промис.товар 13,точ.повт.зам.,третя ст.",
+          "quantity": 2,
+          "unitOfMeasure": "ADT",
+          "deliveryLocation": "Plant 1 US",
+          "deliveryDate": " 17.10.2017  "
+        }
+      ]
+    },
+    {
+      "purchaseRequsitionNumber": "0010000024",
+      "description": " Purchase Announcement 8 ",
+      "rfqDate": " 22.11.2024  ",
+      "rfqTime": " 10:00:00  ",
+      "items": [
+        {
+          "itemNo": 10,
+          "materialNumber": "",
+          "materialDescription": "Packaging",
+          "quantity": 100,
+          "unitOfMeasure": "ADT",
+          "deliveryLocation": "Plant 1 US",
+          "deliveryDate": " 23.10.2017  "
+        }
+      ]
+    },
+    {
+      "purchaseRequsitionNumber": "0010000508",
+      "description": " Purchase Announcement 9 ",
+      "rfqDate": " 22.11.2024  ",
+      "rfqTime": " 10:00:00  ",
+      "items": [
+        {
+          "itemNo": 10,
+          "materialNumber": "NL001",
+          "materialDescription": "Schraube",
+          "quantity": 1,
+          "unitOfMeasure": "ADT",
+          "deliveryLocation": "Plant 1 US",
+          "deliveryDate": " 19.10.2018  "
+        }
+      ]
+    },
+    {
+      "purchaseRequsitionNumber": "0010000535",
+      "description": " Purchase Announcement 10 ",
+      "rfqDate": " 22.11.2024  ",
+      "rfqTime": " 10:00:00  ",
+      "items": [
+        {
+          "itemNo": 10,
+          "materialNumber": "TG13",
+          "materialDescription": "Промис.товар 13,точ.повт.зам.,третя ст.",
+          "quantity": 1210,
+          "unitOfMeasure": "ADT",
+          "deliveryLocation": "Plant 1 US",
+          "deliveryDate": " 25.10.2018  "
+        }
+      ]
+    },
+    {
+      "purchaseRequsitionNumber": "0010000609",
+      "description": " Purchase Announcement 11 ",
+      "rfqDate": " 22.11.2024  ",
+      "rfqTime": " 10:00:00  ",
+      "items": [
+        {
+          "itemNo": 10,
+          "materialNumber": "TG10",
+          "materialDescription": "Hand.goed. 10, PD, derde",
+          "quantity": 10,
+          "unitOfMeasure": "ADT",
+          "deliveryLocation": "Plant 1 US",
+          "deliveryDate": " 06.11.2018  "
+        }
+      ]
+    },
+    {
+      "purchaseRequsitionNumber": "0010000741",
+      "description": " Purchase Announcement 12 ",
+      "rfqDate": " 22.11.2024  ",
+      "rfqTime": " 10:00:00  ",
+      "items": [
+        {
+          "itemNo": 10,
+          "materialNumber": "TG10",
+          "materialDescription": "Hand.goed. 10, PD, derde",
+          "quantity": 10,
+          "unitOfMeasure": "ADT",
+          "deliveryLocation": "Plant 1 US",
+          "deliveryDate": " 20.03.2019  "
+        }
+      ]
+    },
+    {
+      "purchaseRequsitionNumber": "0010000751",
+      "description": " Purchase Announcement 13 ",
+      "rfqDate": " 22.11.2024  ",
+      "rfqTime": " 10:00:00  ",
+      "items": [
+        {
+          "itemNo": 10,
+          "materialNumber": "RM12",
+          "materialDescription": "RAW12,PD,produção repetitiva",
+          "quantity": 5,
+          "unitOfMeasure": "ADT",
+          "deliveryLocation": "Plant 1 US",
+          "deliveryDate": " 18.03.2019  "
+        }
+      ]
+    },
+    {
+      "purchaseRequsitionNumber": "0010000781",
+      "description": " Purchase Announcement 14 ",
+      "rfqDate": " 22.11.2024  ",
+      "rfqTime": " 10:00:00  ",
+      "items": [
+        {
+          "itemNo": 10,
+          "materialNumber": "TG10",
+          "materialDescription": "Hand.goed. 10, PD, derde",
+          "quantity": 50,
+          "unitOfMeasure": "ADT",
+          "deliveryLocation": "Plant 1 US",
+          "deliveryDate": " 15.10.2019  "
+        },
+        {
+          "itemNo": 20,
+          "materialNumber": "TG11",
+          "materialDescription": "Art. comm. 11 PD, commercio registrato",
+          "quantity": 10,
+          "unitOfMeasure": "ADT",
+          "deliveryLocation": "Plant 1 US",
+          "deliveryDate": " 15.10.2019  "
+        }
+      ]
+    },
+    {
+      "purchaseRequsitionNumber": "0010000822",
+      "description": " Purchase Announcement 15 ",
+      "rfqDate": " 22.11.2024  ",
+      "rfqTime": " 10:00:00  ",
+      "items": [
+        {
+          "itemNo": 10,
+          "materialNumber": "TG13",
+          "materialDescription": "Промис.товар 13,точ.повт.зам.,третя ст.",
+          "quantity": 10,
+          "unitOfMeasure": "ADT",
+          "deliveryLocation": "Plant 1 US",
+          "deliveryDate": " 22.10.2019  "
+        }
+      ]
+    },
+    {
+      "purchaseRequsitionNumber": "0010000823",
+      "description": " Purchase Announcement 16 ",
+      "rfqDate": " 22.11.2024  ",
+      "rfqTime": " 10:00:00  ",
+      "items": [
+        {
+          "itemNo": 10,
+          "materialNumber": "TG14",
+          "materialDescription": "สินค้าเพื่อขาย 14,PD,ซื้อ,H14",
+          "quantity": 10,
+          "unitOfMeasure": "ADT",
+          "deliveryLocation": "Plant 1 US",
+          "deliveryDate": " 22.10.2019  "
+        }
+      ]
+    },
+    {
+      "purchaseRequsitionNumber": "0010001079",
+      "description": " Purchase Announcement 17 ",
+      "rfqDate": " 22.11.2024  ",
+      "rfqTime": " 10:00:00  ",
+      "items": [
+        {
+          "itemNo": 10,
+          "materialNumber": "SM0001",
+          "materialDescription": "Materiale di servizio 01",
+          "quantity": 10,
+          "unitOfMeasure": "SA",
+          "deliveryLocation": "Plant 1 US",
+          "deliveryDate": " 20.02.2021  "
+        }
+      ]
+    },
+    {
+      "purchaseRequsitionNumber": "0010001080",
+      "description": " Purchase Announcement 18 ",
+      "rfqDate": " 22.11.2024  ",
+      "rfqTime": " 10:00:00  ",
+      "items": [
+        {
+          "itemNo": 10,
+          "materialNumber": "SM0001",
+          "materialDescription": "Materiale di servizio 01",
+          "quantity": 20,
+          "unitOfMeasure": "SA",
+          "deliveryLocation": "Plant 1 US",
+          "deliveryDate": " 00.00.0000  "
+        }
+      ]
+    }
+  ]

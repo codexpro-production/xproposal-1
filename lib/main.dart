@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:xproposal/screens/announcements_screen.dart';
 import 'screens/login_screen.dart';
 import 'screens/password_reset_screen.dart';
 import 'screens/password_setup_screen.dart';
@@ -7,6 +8,9 @@ import 'screens/vendor_list_screen.dart';
 import 'screens/pdf_printer_screen.dart';
 import 'screens/xproposal_screen.dart';
 import 'screens/responsible_screen.dart';
+import 'screens/announcements_screen.dart';
+
+
 void main() async {
   runApp(const MyApp());
 }
@@ -31,6 +35,7 @@ class MyApp extends StatelessWidget {
         '/pdfPrinter': (context) => PDFPrinterScreen(),
         '/responsible': (context) => ResponsibleScreen(),
         //'/setup-password': (context) => PasswordSetupScreen(token: ''),
+        // '/announcements': (context) => AnnouncementsScreen()
       },
       onGenerateRoute: (settings) {
         if (settings.name?.startsWith('/setup-password') == true) {
