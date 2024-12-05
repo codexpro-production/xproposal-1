@@ -8,8 +8,7 @@ import 'screens/vendor_list_screen.dart';
 import 'screens/pdf_printer_screen.dart';
 import 'screens/xproposal_screen.dart';
 import 'screens/responsible_screen.dart';
-import 'screens/announcements_screen.dart';
-
+import 'screens/home_screen.dart';
 
 void main() async {
   runApp(const MyApp());
@@ -25,17 +24,18 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: '/',
+      initialRoute: '/home',
       routes: {
-        '/': (context) => LoginScreen(),
+        '/home': (context) => const HomeScreen(),
+        '/login': (context) => LoginScreen(),
         '/passwordReset': (context) => PasswordResetScreen(),
         '/register': (context) => RegisterScreen(),
         '/vendorList': (context) => VendorListScreen(),
         '/xproposal': (context) => XProposalScreen(),
         '/pdfPrinter': (context) => PDFPrinterScreen(),
         '/responsible': (context) => ResponsibleScreen(),
-        //'/setup-password': (context) => PasswordSetupScreen(token: ''),
-        // '/announcements': (context) => AnnouncementsScreen()
+        '/setup-password': (context) => PasswordSetupScreen(token: ''),
+        '/announcements': (context) => AnnouncementsScreen(),
       },
       onGenerateRoute: (settings) {
         if (settings.name?.startsWith('/setup-password') == true) {
@@ -47,7 +47,7 @@ class MyApp extends StatelessWidget {
             );
           }
         }
-        return null; //404
+        return null; // 404
       },
     );
   }
