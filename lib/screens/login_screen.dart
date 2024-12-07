@@ -17,6 +17,7 @@ class _LoginScreenState extends State<LoginScreen> {
   String? _captchaToken;
   String _captchaFeedback = '';
   String _tcVknFeedback = '';
+  String _generalError = '';
 
   @override
   void initState() {
@@ -25,7 +26,7 @@ class _LoginScreenState extends State<LoginScreen> {
     html.window.onMessage.listen((msg) {
       String token = msg.data;
       setState(() {
-        _captchaToken = token;
+        _captchaToken = token; // Token'ı doğru şekilde alıyoruz
       });
     });
   }
@@ -85,6 +86,18 @@ class _LoginScreenState extends State<LoginScreen> {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
+                            // Genel hata mesajı burada gösterilecek
+                            if (_generalError.isNotEmpty)
+                              Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                                child: Text(
+                                  _generalError,
+                                  style: TextStyle(
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
                             const SizedBox(height: 24),
 
                             TextField(
@@ -111,7 +124,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                               ),
                             const SizedBox(height: 16),
-
                             TextField(
                               controller: _passwordController,
                               obscureText: _obscureText,
@@ -136,8 +148,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             Align(
                               alignment: Alignment.centerRight,
                               child: TextButton(
-                                onPressed: () {
-                                  Navigator.pushNamed(context, '/passwordReset');
+                                onPressed: () { 
+                                  Navigator.pushNamed(context, '/passwordReset', arguments: _tcVknController.text);
                                 },
                                 child: const Text(
                                   "Şifremi Unuttum",
@@ -150,10 +162,21 @@ class _LoginScreenState extends State<LoginScreen> {
                             CaptchaWidget(
                               onValidate: (isValid) {
                                 setState(() {
-                                  _captchaFeedback = isValid
-                                      ? "CAPTCHA doğru!"
-                                      : "Lütfen tekrar deneyin.";
-                                      _captchaToken = isValid ? "valid-captcha-token" : null;
+                                  if (isValid) {
+                                    // Doğruysa sadece token güncellenir
+                                    _captchaToken = "valid-captcha-token";
+                                    _captchaFeedback = ""; // Geri bildirim verilmez
+                                  } else {
+                                    // Yanlışsa bildirim yapılır ve token sıfırlanır
+                                    _captchaToken = null;
+                                    _captchaFeedback = "CAPTCHA yanlış, lütfen tekrar deneyin.";
+                                  }
+                                });
+                              },
+                              onReset: () {
+                                setState(() {
+                                  // CAPTCHA sıfırlandığında token sıfırlanır
+                                  _captchaToken = null;
                                 });
                               },
                             ),
@@ -180,7 +203,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               child: const Text("Giriş Yap"),
                             ),
                             const SizedBox(height: 16),
-                            TextButton(
+                            ElevatedButton(
                               onPressed: () {
                                 Navigator.pushNamed(context, '/register');
                               },
@@ -203,47 +226,61 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-bool isCaptchaValid() {
-  return _captchaToken != null &&
-         _captchaToken!.isNotEmpty &&
-         _captchaFeedback.contains("doğru");
-}
+  bool isCaptchaValid() {
+    // _captchaToken kontrolü, token'ın doğru şekilde alınıp alınmadığını kontrol ediyoruz
+    print("Captcha token: $_captchaToken");
+    return _captchaToken != null && _captchaToken!.isNotEmpty;
+  }
 
-Future<void> _login() async {
-  final tcVkn = _tcVknController.text;
-  final password = _passwordController.text;
+  Future<void> _login() async {
+    final tcVkn = _tcVknController.text;
+    final password = _passwordController.text;
 
-  if (tcVkn.isEmpty || !isValidTcOrVkn(tcVkn)) {
+    // Reset error messages before new validation
     setState(() {
-      _tcVknFeedback = "Geçerli TC Kimlik Numarası veya VKN giriniz";
+      _generalError = ''; // Clear previous errors
+      _tcVknFeedback = '';
+      _captchaFeedback = '';
     });
-    return;
+
+    // Validate TC/VKN and password
+    if (tcVkn.isEmpty || !isValidTcOrVkn(tcVkn)) {
+      setState(() {
+        _generalError = " Hatalı TC Kimlik Numarası, VKN veya şifre!!";
+      });
+      return;
+    }
+    if (password.isEmpty) {
+      setState(() {
+        _generalError = "Şifre boş olamaz!";
+      });
+      return;
+    }
+    if (!isCaptchaValid()) {
+      setState(() {
+        _captchaFeedback = "Lütfen CAPTCHA doğrulamasını tamamlayın.";
+        _generalError = "CAPTCHA doğrulaması hatalı!";
+      });
+      return;
+    }
+
+    // Proceed with login
+    try {
+      final message = await UserService.login(tcVkn: tcVkn, password: password);
+      print('Login yanıtı: $message'); 
+
+      if (message == "success") {
+        Navigator.pushReplacementNamed(context, '/xproposal'); 
+      } else {
+        setState(() {
+          _generalError = "Hatalı TC Kimlik Numarası, VKN veya şifre.";
+        });
+      }
+    } catch (error) {
+      print('Hata: $error');
+      setState(() {
+        _generalError = "Giriş hatası: $error";
+      });
+    }
   }
-  if (!isCaptchaValid()) {
-    setState(() {
-      _captchaFeedback = "Lütfen CAPTCHA doğrulamasını tamamlayın.";
-    });
-    return;
-  }
-
-  try {
-  final message = await UserService.login(tcVkn: tcVkn, password: password);
-  print('Login yanıtı: $message'); 
-
-  if (message == "success") {
-    Navigator.pushReplacementNamed(context, '/xproposal'); 
-  } else {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message)),
-    );
-  }
-} catch (error) {
-  print('Hata: $error');
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(content: Text("Giriş hatası: $error")),
-  );
-}
-}
-
-
 }

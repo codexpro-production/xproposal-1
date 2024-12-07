@@ -1,88 +1,46 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UserService {
   static const String apiUrl = "http://localhost:3000/api/";
 
-  // Add User
   static Future<String> addUser({
-    required String userType,
+required String userType,
     required String name,
     required String surname,
     String? tckn,
     String? vkn,
     required String email,
     required String password,
-    String? purchaseGroup,     // Only for Responsible
-    int? telNumber,            // Only for Responsible
-    int? faxNumber,            // Only for Responsible
-    int? responsible,          // Only for Responsible
+    String? purchaseGroup,
+    int? telNumber,
+    int? faxNumber,
+    int? responsible,
   }) async {
-    var user = {
-      "type": userType,
-      "name": name,
-      "surname": surname,
-      "tckn": tckn,
-      "vkn": vkn,
-      "email": email,
-      "password": password,
-    };
+    final url = Uri.parse("${apiUrl}add-user");
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        'type': userType,
+        'name': name,
+        'surname': surname,
+        'tckn': tckn,
+        'vkn': vkn,
+        'email': email,
+        'password': password,
+        'purchaseGroup': purchaseGroup,
+        'telNumber': telNumber,
+        'faxNumber': faxNumber,
+        'responsible': responsible,
+      }),
+    );
 
-    if (userType == "Vendor") {
-      if (tckn != null) {
-        user["tckn"] = tckn.toString(); // Convert to String if not null
-      }
-      if (vkn != null) {
-        user["vkn"] = vkn.toString(); // Convert to String if not null
-      }
-    } else if (userType == "Responsible") {
-      // Responsible-specific fields
-      if (purchaseGroup != null) {
-        user["purchaseGroup"] = purchaseGroup; // Only add if not null
-      }
-      if (telNumber != null) {
-        user["telNumber"] = telNumber.toString(); // Convert to String if not null
-      }
-      if (faxNumber != null) {
-        user["faxNumber"] = faxNumber.toString(); // Convert to String if not null
-      }
-      if (responsible != null) {
-        user["responsible"] = responsible.toString(); // Convert to String if not null
-      }
-    } else {
-      return "Invalid user type!";
-    }
-
-    try {
-      var response = await http.post(
-        Uri.parse("${apiUrl}add-user"),
-        headers: {"Content-Type": "application/json"},
-        body: jsonEncode(user),
-      );
     if (response.statusCode == 201) {
-      return "Kullanıcı başarıyla eklendi!";
-    } else if (response.statusCode == 409) {
-      return "Bu kullanıcı zaten kayıtlı!";
+      return jsonDecode(response.body)['message'];
     } else {
-      return "Kullanıcı eklenemedi: ${response.body}";
-    }
-    } catch (e) {
-      return "Hata oluştu: $e";
-    }
-  }
-
-  // Get Users
-  static Future<List<dynamic>> getUsers(String userType) async {
-    try {
-      var response = await http.get(Uri.parse("${apiUrl}get-users/$userType"));
-
-      if (response.statusCode == 200) {
-        return jsonDecode(response.body)["users"];
-      } else {
-        throw Exception("Kullanıcılar getirilemedi");
-      }
-    } catch (e) {
-      throw Exception("Hata oluştu: $e");
+      throw Exception(jsonDecode(response.body)['message']);
     }
   }
 
@@ -186,6 +144,11 @@ class UserService {
     }
   }
 
+
+
+
+
+
   static Future<String> login({required String tcVkn, required String password}) async {
   try {
     final response = await http.post(
@@ -214,5 +177,13 @@ class UserService {
     return "Bir hata oluştu: $e";
   }
 }
+
+
+
+static Future<String?> getUserEmail() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('userEmail'); // 'userEmail' anahtarı ile saklanan e-posta adresi
+  }
+
 
 }

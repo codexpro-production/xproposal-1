@@ -2,82 +2,87 @@ const express = require("express");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const nodemailer = require("nodemailer");
-const UserVendor = require("./models/UserVendor");
-const UserResponsible = require("./models/UserResponsible");
+const UserVendor = require("./Models/UserVendor");
+const UserResponsible = require("./Models/UserResponsible");
 
 const router = express.Router();
 
-// Add User (Vendor or Responsible)
 router.post("/add-user", async (req, res) => {
   try {
-    const { type, name, surname, tckn, vkn, email, purchaseGroup,
-      telNumber,
-      faxNumber,
-      responsible, } = req.body;
+    const { type, name, surname, email, tckn, vkn, purchaseGroup, telNumber, faxNumber, responsible } = req.body;
 
-    const existingUser = await UserVendor.findOne({ email }) || await UserResponsible.findOne({ email });
-      if (existingUser) {
-        return res.status(409).send({ success: false, message: "Bu kullanıcı zaten kayıtlı!" });
-      }
-  
-    const activationToken = jwt.sign({ email }, 'secret-key', { expiresIn: '1h' });
+    // console.log("Gelen veri:", { type, name, surname, tckn, vkn, email });
 
-    if (type === "Vendor") {
-      const user = new UserVendor({
-        type: "Vendor",
-        name,
-        surname,
-        tckn,
-        vkn,
-        email,
-        activationToken, 
-        isActive:false 
+    if (!tckn && !vkn) {
+      return res.status(400).send({
+        success: false,
+        message: "TCKN veya VKN'den en az birini sağlamalısınız!",
       });
-      await user.save();
-
-      const activationTokenLink = `http://localhost:54334/setup-password#/setup-password?token=${activationToken}`;
-      await sendEmail({ email, activationTokenLink });
-
-      res.status(201).send({
-        success: true,
-        message: `${type} successfully added! Activation link has been sent.`,
-        activationTokenLink,
-      });
-      
-    } else if (type === "Responsible") {
-      model = UserResponsible;
-      const user = new model({
-        type: "Responsible",
-        name,
-        surname,
-        tckn,
-        vkn,
-        email,
-        purchaseGroup,
-        telNumber,
-        faxNumber,
-        responsible,
-        activationToken, 
-        isActive:false 
-      });
-      await user.save();
-
-      const activationTokenLink = `http://localhost:54334/setup-password#/setup-password?token=${activationToken}`;
-      await sendEmail({ email, activationTokenLink });
-
-      res.status(201).send({
-        success: true,
-        message: `${type} successfully added! Activation link has been sent.`,
-        activationTokenLink,
-      });
-    } else {
-      return res.status(400).send({ success: false, message: "Invalid user type!" });
     }
+    
+    let existingUserByTckn = null;
+    let existingUserByVkn = null;
+
+    if (tckn) {
+      existingUserByTckn = await UserVendor.findOne({ tckn }) || await UserResponsible.findOne({ tckn });
+    }
+    if (vkn) {
+      existingUserByVkn = await UserVendor.findOne({ vkn }) || await UserResponsible.findOne({ vkn });
+    }
+
+    if (existingUserByTckn) {
+      return res.status(409).send({ success: false, message: "Bu TCKN zaten kayıtlı!" });
+    }
+    if (existingUserByVkn) {
+      return res.status(409).send({ success: false, message: "Bu VKN zaten kayıtlı!" });
+    }
+
+    const activationToken = jwt.sign({ email }, 'secret-key', { expiresIn: '1h' }); // create token
+
+    const userData = {
+      type,
+      name,
+      surname,
+      email,
+      activationToken,
+      isActive: false,
+      tckn: tckn || undefined,
+      vkn: vkn || undefined,
+      purchaseGroup: purchaseGroup,
+      telNumber: telNumber,
+      faxNumber: faxNumber,
+      responsible: responsible,
+    };
+
+    let userModel;
+    if (type === "Vendor") {
+      userModel = new UserVendor(userData);
+    } else if (type === "Responsible") {
+      userModel = new UserResponsible(userData);
+    } else {
+      return res.status(400).send({ success: false, message: "Geçersiz kullanıcı tipi!" });
+    }
+    const savedUser = await userModel.save();
+    console.log("Kaydedilen kullanıcı:", savedUser); 
+    
+    const activationTokenLink = `http://localhost:54334/setup-password#/setup-password?token=${activationToken}`;
+    await sendEmail({ email, activationTokenLink });
+
+    res.status(201).send({
+      success: true,
+      message: `Kaydınızı gerçekleşti. Mail adresinizi kontrol ediniz!`
+      //  message: `${type} başarıyla eklendi!`,
+    });
   } catch (err) {
-    res.status(500).send({ success: false, message: "User could not be added!", error: err.message });
+    console.error("Kullanıcı eklenemedi:", err);
+    
+    if (err.code === 11000) {
+      return res.status(409).send({ success: false, message: "Bu kullanıcı zaten mevcut!" });
+    }
+
+    res.status(500).send({ success: false, message: "Kullanıcı eklenemedi", error: err.message });
   }
 });
-
 
 // Get all users (Vendor or Responsible)
 router.get("/get-users/:type", async (req, res) => {
@@ -145,6 +150,11 @@ router.delete("/delete-user/:type/:id", async (req, res) => {
   }
 });
 /////////////////////////////////////////////////////////////////
+
+
+////////////////////
+
+
 router.post("/setup-password", async (req, res) => {
   const { token, password } = req.body;
   if (!token || !password) {
@@ -218,7 +228,6 @@ router.post("/login", async (req, res) => {
   }
 });
 
-
 async function sendEmail({ email, activationTokenLink }) {
   try {
     const transporter = nodemailer.createTransport({
@@ -233,10 +242,56 @@ async function sendEmail({ email, activationTokenLink }) {
       from: 'gun.colak@gmail.com',
       to: email,
       subject: 'Activation Link',
-      text: `To activate your account, please click the link below:
-            ${activationTokenLink}
-            
-            This link is valid for 1 hour.`,
+      html: `
+        <html>
+          <head>
+            <style>
+              body {
+                font-family: Arial, sans-serif;
+                background-color: #f4f4f9;
+                color: #333;
+                padding: 20px;
+              }
+              .container {
+                background-color: #ffffff;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+              }
+              h2 {
+                text-align: center;
+                color: #4CAF50;
+              }
+              p {
+                font-size: 16px;
+                line-height: 1.6;
+              }
+              .button {
+                display: inline-block;
+                background-color: #4CAF50;
+                color: white;
+                padding: 14px 30px;
+                font-size: 16px;
+                text-align: center;
+                text-decoration: none;
+                border-radius: 5px;
+                margin: 20px 0;
+              }
+              .button:hover {
+                background-color: #45a049;
+              }
+            </style>
+          </head>
+          <body>
+            <div class="container">
+              <h2>Account Activation</h2>
+              <p>To activate your account, please click the button below:</p>
+              <a href="${activationTokenLink}" class="button">Activate Your Account</a>
+              <p>This link is valid for 1 hour.</p>
+            </div>
+          </body>
+        </html>
+      `,
     };
 
     const info = await transporter.sendMail(mailOptions);
@@ -246,5 +301,6 @@ async function sendEmail({ email, activationTokenLink }) {
     throw new Error('Could not send email.');
   }
 }
+
 
 module.exports = router;
